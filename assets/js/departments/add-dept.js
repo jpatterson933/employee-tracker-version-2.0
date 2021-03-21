@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 const connection = require('../../../config/connection');
 
-const createDepartment = () => {
+const addDepartment = () => {
     inquirer.prompt ([
         {
             type: 'input',
@@ -19,17 +19,17 @@ const createDepartment = () => {
     ])
     .then(name => {
         console.log('Inserting a new departments...\n');
-        connection.query('INSERT INTO department SET ?',
-            {
-            department_name: `${name.deptName}`,
-            },
-            (err, res) => {
+
+        const insert = 'INSERT INTO department SET ?'
+
+        connection.query(insert, {department_name: `${name.deptName}`}, (err, res) => {
+
                 if (err) throw err;
+
                 console.log(`${res.affectedRows} new department!\n`);
-                // Call updateProduct AFTER the INSERT completes
-          
-        })
+                // once the option has been inserted will need to call another prompt
+            })
     })
 }
 
-module.exports = createDepartment
+module.exports = addDepartment
