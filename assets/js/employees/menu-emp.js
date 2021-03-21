@@ -2,6 +2,7 @@ const inquirer = require('inquirer');
 const connection = require('../../../config/connection');
 const viewEmployees = require('./view-emp')
 const addEmployee = require('./add-emp')
+const deleteEmployee = require('./del-emp')
 
 const employeeMenu = () => {
     inquirer.prompt ([
@@ -27,6 +28,7 @@ const employeeMenu = () => {
                 break;
             case 'Delete Employee':
                 console.log('You have chosen to fire someone')
+                deleteEmployee();
                 break;
             case 'Exit':
                 console.log('Goodbye!')
