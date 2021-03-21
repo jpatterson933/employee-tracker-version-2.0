@@ -10,8 +10,8 @@ const viewDepartments = () => {
             console.log(`${department_id} | ${department_name}`);
         });
         console.log('-----------------------------------');
-        console.log('Type node server and press ENTER for Main Menu')
-        connection.end();
+        console.log('Type CTRL + C to exit!')
+        // connection.end();
     });
 };
 

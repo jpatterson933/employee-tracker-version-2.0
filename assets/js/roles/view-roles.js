@@ -6,8 +6,8 @@ const viewRoles = () => {
     connection.query('SELECT * FROM role', (err, res) => {
         if (err) throw err;
         //deconstruct
-        res.forEach(({ role_id, title, salary}) => {
-            console.log(`${role_id} | ${title} | ${salary}`);
+        res.forEach(({ role_id, title, salary, department_id}) => {
+            console.log(`Role ID : ${role_id} | Title : ${title} | Salary : ${salary} | Department ID : ${department_id}`);
         });
         console.log('-----------------------------------');
         console.log('Type node server and press ENTER for Main Menu')

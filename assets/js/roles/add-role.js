@@ -1,10 +1,25 @@
 const inquirer = require('inquirer');
 const connection = require('../../../config/connection');
-const viewDepartments = require('../departments/view-dept')
 
+let departmentId = [];
+let deptName = [];
+
+const viewDept = async () => {
+    const departmentName = connection.query('SELECT * FROM department', (err, res) => {
+        if (err) throw err;
+        res.forEach(({ department_id, department_name }) => {
+            departmentId.push(department_id)
+            deptName.push(department_name)
+        })
+    });
+};
+viewDept();
 const addRole = () => {
-    //add departments as choices
-
+    
+    //tells us which department choices we have
+    console.log(departmentId)
+    console.log(deptName)
+    
     inquirer.prompt ([
         {
             type: 'input',
@@ -32,6 +47,12 @@ const addRole = () => {
                 }
             }
         },
+        {
+            type: 'list',
+            message: 'Which Department does this role belong to?',
+            name: 'department',
+            choices: departmentId
+        }
     ])
     .then(role => {
         console.log('Inserting a new role...\n');
@@ -41,7 +62,8 @@ const addRole = () => {
         connection.query(insert, 
             {
                 title: `${role.title}`,
-                salary: `${role.salary}`
+                salary: `${role.salary}`,
+                department_id: `${role.department}`
             },
                 (err, res) => {
 
