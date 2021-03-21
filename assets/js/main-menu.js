@@ -30,7 +30,7 @@ const mainMenu = () => {
             case 'Exit':
                 console.log('Goodbye!')
                 //we will turn this on once we finalize the application
-                // connection.end();
+                connection.end();
                 break;
         }
     })

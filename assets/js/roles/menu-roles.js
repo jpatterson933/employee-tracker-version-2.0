@@ -4,6 +4,7 @@ const viewRoles = require('./view-roles')
 const addRole = require('./add-role');
 const deleteRole = require('./del-role')
 const editRole = require('./edit-role')
+const mainMenu = require('../main-menu')
 
 const rolesMenu = () => {
     inquirer.prompt ([
@@ -35,6 +36,7 @@ const rolesMenu = () => {
             case 'Exit':
                 console.log('Goodbye')
                 //need to add an exit function
+                mainMenu()
                 break;
         }
     })
