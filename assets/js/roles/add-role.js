@@ -2,14 +2,14 @@ const inquirer = require('inquirer');
 const connection = require('../../../config/connection');
 
 let departmentId = [];
-let deptName = [];
+let deptDisplay = [];
 
 const viewDept = async () => {
     const departmentName = connection.query('SELECT * FROM department', (err, res) => {
         if (err) throw err;
         res.forEach(({ department_id, department_name }) => {
             departmentId.push(department_id)
-            deptName.push(department_name)
+            deptDisplay.push(`${department_name} ID : ${department_id}`)
         })
     });
 };
@@ -18,7 +18,7 @@ const addRole = () => {
     
     //tells us which department choices we have
     console.log(departmentId)
-    console.log(deptName)
+    console.log(deptDisplay)
     
     inquirer.prompt ([
         {
@@ -49,7 +49,7 @@ const addRole = () => {
         },
         {
             type: 'list',
-            message: 'Which Department does this role belong to?',
+            message: `Choose Corresponding Department ID ${deptDisplay}`,
             name: 'department',
             choices: departmentId
         }

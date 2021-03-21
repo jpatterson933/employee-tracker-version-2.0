@@ -1,6 +1,21 @@
 const inquirer = require('inquirer');
 const connection = require('../../../config/connection');
 
+let roleId = [];
+let roleTitle = [];
+
+const viewRole = async () => {
+    const roleName = connection.query('SELECT * FROM role', (err, res) => {
+        if (err) throw err;
+        res.forEach(({ role_id, title }) => {
+            roleId.push(role_id)
+            roleTitle.push(title)
+        })
+    });
+};
+
+viewRole();
+
 const addEmployee = () => {
 
     inquirer.prompt ([
@@ -30,6 +45,12 @@ const addEmployee = () => {
                 }
             }
         },
+        {
+            type: 'list',
+            message: 'Select Role Identification',
+            name: 'roleId',
+            choices: roleId
+        }
         //i need to add a role chain here as well as an manager boolean yes or no choice option
     ])
     .then(emp => {
@@ -40,8 +61,8 @@ const addEmployee = () => {
         connection.query(insert, 
             {
                 first_name: `${emp.firstName}`,
-                last_name: `${emp.lastName}`
-                //role id?
+                last_name: `${emp.lastName}`,
+                role_id: `${emp.roleId}`
                 //manager boolean?
             },
                 (err, res) => {
