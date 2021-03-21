@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const connection = require('../../../config/connection');
+const viewRoles = require('./vew-roles')
 
 const rolesMenu = () => {
     inquirer.prompt ([
@@ -14,6 +15,7 @@ const rolesMenu = () => {
         switch (menuChoice.roleMenu) {
             case 'View Roles':
                 console.log('You have chosen to view roles')
+                viewRoles();
                 break;
             case 'Add Role':
                 console.log('You have chosen to add a role')
