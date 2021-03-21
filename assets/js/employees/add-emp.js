@@ -2,14 +2,14 @@ const inquirer = require('inquirer');
 const connection = require('../../../config/connection');
 
 let roleId = [];
-let roleTitle = [];
+let roleDisplay = [];
 
 const viewRole = async () => {
     const roleName = connection.query('SELECT * FROM role', (err, res) => {
         if (err) throw err;
         res.forEach(({ role_id, title }) => {
             roleId.push(role_id)
-            roleTitle.push(title)
+            roleDisplay.push(`-- ${title}: ${role_id} --`)
         })
     });
 };
@@ -17,7 +17,7 @@ const viewRole = async () => {
 viewRole();
 
 const addEmployee = () => {
-
+console.log(roleDisplay)
     inquirer.prompt ([
         {
             type: 'input',
@@ -47,7 +47,7 @@ const addEmployee = () => {
         },
         {
             type: 'list',
-            message: 'Select Role Identification',
+            message: roleDisplay,
             name: 'roleId',
             choices: roleId
         }

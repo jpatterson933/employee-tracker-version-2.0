@@ -9,7 +9,7 @@ const viewDept = async () => {
         if (err) throw err;
         res.forEach(({ department_id, department_name }) => {
             departmentId.push(department_id)
-            deptDisplay.push(`${department_name} ID : ${department_id}`)
+            deptDisplay.push(`-- ${department_name} : ${department_id} --`)
         })
     });
 };
@@ -49,7 +49,7 @@ const addRole = () => {
         },
         {
             type: 'list',
-            message: `Choose Corresponding Department ID ${deptDisplay}`,
+            message: `Department Info -- ${deptDisplay} --`,
             name: 'department',
             choices: departmentId
         }
