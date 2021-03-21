@@ -34,9 +34,10 @@ const rolesMenu = () => {
                 deleteRole();
                 break;
             case 'Exit':
-                console.log('Goodbye')
+                console.log('Goodbye! Type node server to pull up main menu!')
                 //need to add an exit function
-                mainMenu()
+                // return mainMenu();
+                connection.end();
                 break;
         }
     })

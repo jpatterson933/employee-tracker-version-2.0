@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const connection = require('../../../config/connection');
+const mainMenu = require('../main-menu');
 
 //this function allows for us to view all of our
 const viewDepartments = () => {
@@ -10,6 +11,7 @@ const viewDepartments = () => {
         });
         console.log('-----------------------------------');
     });
+    return mainMenu();
 };
 
 module.exports = viewDepartments

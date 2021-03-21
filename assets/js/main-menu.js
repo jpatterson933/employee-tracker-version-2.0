@@ -4,6 +4,7 @@ const departmentsMenu = require('./departments/menu-dept')
 const rolesMenu = require('./roles/menu-roles')
 const employeeMenu = require('./employees/menu-emp')
 
+
 const mainMenu = () => {
     inquirer.prompt ([
         {
@@ -28,12 +29,14 @@ const mainMenu = () => {
                 employeeMenu();
                 break;
             case 'Exit':
-                console.log('Goodbye!')
+                console.log('Goodbye! Type Node Server to restart the program!')
+                //why does this work here but not inside my other functions?
+                return mainMenu();
                 //we will turn this on once we finalize the application
-                connection.end();
-                break;
+                // connection.end();
+                // break;
         }
     })
 }
 
-module.exports = mainMenu;
+module.exports = mainMenu

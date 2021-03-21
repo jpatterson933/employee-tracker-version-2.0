@@ -33,10 +33,10 @@ const departmentsMenu = () => {
                 deleteDepartment();
                 break;
             case 'Exit':
-                console.log('Goodbye');
-                //here we will want to take them back to the main menu
-                //when you run the mainMenu function it throws an error saying that it is not a function
-                // mainMenu();
+                console.log('Goodbye! Type node server to pull up main menu!')
+                //need to add an exit function
+                // return mainMenu();
+                connection.end();
                 break;
         }
     })
