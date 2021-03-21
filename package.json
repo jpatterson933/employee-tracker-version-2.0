@@ -1,0 +1,25 @@
+{
+  "name": "employee-tracker-version-2.0",
+  "version": "1.0.0",
+  "description": "An employee tracker using mysql and Inquirer",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jpatterson933/employee-tracker-version-2.0.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jpatterson933/employee-tracker-version-2.0/issues"
+  },
+  "homepage": "https://github.com/jpatterson933/employee-tracker-version-2.0#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "mysql": "^2.18.1"
+  }
+}
