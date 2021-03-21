@@ -2,6 +2,7 @@ const inquirer = require('inquirer');
 const connection = require('../../../config/connection');
 
 const addRole = () => {
+
     inquirer.prompt ([
         {
             type: 'input',
@@ -21,23 +22,33 @@ const addRole = () => {
             message: 'Enter Salary',
             name: 'salary',
             validate: checkInput => {
-                if ()
+                if (checkInput) {
+                    return true;
+                } else {
+                    console.log(`Please enter a valid role title!`)
+                    return false;
+                }
             }
-        }
+        },
     ])
-    .then(name => {
-        console.log('Inserting a new departments...\n');
+    .then(role => {
+        console.log('Inserting a new role...\n');
 
-        const insert = 'INSERT INTO department SET ?'
+        const insert = 'INSERT INTO role SET ?'
 
-        connection.query(insert, {department_name: `${name.deptName}`}, (err, res) => {
+        connection.query(insert, 
+            {
+                title: `${role.title}`,
+                salary: `${role.salary}`
+            },
+                (err, res) => {
 
                 if (err) throw err;
 
-                console.log(`${res.affectedRows} new department!\n`);
+                console.log(`${res.affectedRows} new role!\n`);
                 // once the option has been inserted will need to call another prompt
             })
     })
 }
 
-module.exports = addDepartment
+module.exports = addRole
