@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
-const connection = require('../../config/connection');
-const mainMenu = require('./main-menu')
+const connection = require('../../../config/connection');
+const viewDepartments = require('../departments/view-dept')
+const createDepartment = require('../departments/add-dept')
 
 const departmentsMenu = () => {
     inquirer.prompt ([
@@ -15,9 +16,11 @@ const departmentsMenu = () => {
         switch (menuChoice.deptMenu) {
             case 'View Departments':
                 console.log('You chose view departments')
+                viewDepartments();
                 break;
             case 'Add Departments':
                 console.log('You chose to add a department')
+                createDepartment();
                 break;
             case 'Edit Departments':
                 console.log('You chose to edit the departments')

@@ -1,8 +1,8 @@
 const inquirer = require('inquirer');
 const connection = require('../../config/connection');
-const departmentsMenu = require('./departments')
-const rolesMenu = require('./roles')
-const employeeMenu = require('./employees')
+const departmentsMenu = require('./departments/menu-dept')
+const rolesMenu = require('./roles/menu-roles')
+const employeeMenu = require('./employees/menu-emp')
 
 const mainMenu = () => {
     inquirer.prompt ([
