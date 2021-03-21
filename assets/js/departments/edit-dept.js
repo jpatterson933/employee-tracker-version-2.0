@@ -47,13 +47,15 @@ const editDepartment = () => {
         ],
         (err, res) => {
         if (err) throw err;
-        console.log(`${res.affectedRows} products updated!\n`);
+        console.log(`${res.affectedRows} department updated!\n`);
             //do i need to call my delete function?
+        console.log('Type node server and press ENTER for Main Menu')
+        connection.end();
         }
     );
 
     // logs the actual query being run
-    console.log(query.sql);
+    // console.log(query.sql); --I do not need this now
 //-----------------------------------
     })
 }

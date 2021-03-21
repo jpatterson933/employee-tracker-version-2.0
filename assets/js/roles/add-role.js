@@ -1,7 +1,9 @@
 const inquirer = require('inquirer');
 const connection = require('../../../config/connection');
+const viewDepartments = require('../departments/view-dept')
 
 const addRole = () => {
+    //add departments as choices
 
     inquirer.prompt ([
         {
@@ -47,6 +49,8 @@ const addRole = () => {
 
                 console.log(`${res.affectedRows} new role!\n`);
                 // once the option has been inserted will need to call another prompt
+                console.log('Type node server and press ENTER for Main Menu')
+                connection.end();
             })
     })
 }

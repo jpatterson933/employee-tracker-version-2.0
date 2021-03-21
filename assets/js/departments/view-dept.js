@@ -10,8 +10,9 @@ const viewDepartments = () => {
             console.log(`${department_id} | ${department_name}`);
         });
         console.log('-----------------------------------');
+        console.log('Type node server and press ENTER for Main Menu')
+        connection.end();
     });
-    return mainMenu();
 };
 
 module.exports = viewDepartments

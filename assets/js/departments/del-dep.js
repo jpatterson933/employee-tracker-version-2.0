@@ -30,7 +30,9 @@ const deleteDepartment = () => {
           },
           (err, res) => {
             if (err) throw err;
-            console.log(`${res.affectedRows} products deleted!\n`);
+            console.log(`${res.affectedRows} departments deleted!\n`);
+            console.log('Type node server and press ENTER for Main Menu')
+            connection.end();
           }
         );
     })

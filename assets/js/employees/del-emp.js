@@ -29,6 +29,8 @@ const deleteEmployee = () => {
           (err, res) => {
             if (err) throw err;
             console.log(`${res.affectedRows} employee deleted!\n`);
+            console.log('Type node server and press ENTER for Main Menu')
+            connection.end();
           }
         );
     })

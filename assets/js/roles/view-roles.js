@@ -10,6 +10,8 @@ const viewRoles = () => {
             console.log(`${role_id} | ${title} | ${salary}`);
         });
         console.log('-----------------------------------');
+        console.log('Type node server and press ENTER for Main Menu')
+        connection.end();
     });
 };
 

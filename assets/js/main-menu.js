@@ -31,10 +31,10 @@ const mainMenu = () => {
             case 'Exit':
                 console.log('Goodbye! Type Node Server to restart the program!')
                 //why does this work here but not inside my other functions?
-                return mainMenu();
+                // return mainMenu();
                 //we will turn this on once we finalize the application
-                // connection.end();
-                // break;
+                connection.end();
+                break;
         }
     })
 }

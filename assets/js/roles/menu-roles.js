@@ -30,7 +30,7 @@ const rolesMenu = () => {
                 editRole();
                 break;
             case 'Delete Role':
-                console.log('You have chose to delete a role')
+                console.log('You have chosen to delete a role')
                 deleteRole();
                 break;
             case 'Exit':

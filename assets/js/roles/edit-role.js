@@ -47,7 +47,7 @@ const editRole = () => {
     .then(edit => {
         //---------------------------------
 
-        console.log('Updating Department Name...\n');
+        console.log('Updating Role Name...\n');
     const query = connection.query(
         `UPDATE role SET ? WHERE ?`,
         [
@@ -61,7 +61,9 @@ const editRole = () => {
         ],
         (err, res) => {
         if (err) throw err;
-        console.log(`${res.affectedRows} products updated!\n`);
+        console.log(`${res.affectedRows} roles updated!\n`);
+        console.log('Type node server and press ENTER for Main Menu')
+        connection.end();
             //do i need to call my delete function?
         }
     );

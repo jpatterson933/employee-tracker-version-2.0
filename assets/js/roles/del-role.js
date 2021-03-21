@@ -29,6 +29,8 @@ const deleteRole = () => {
           (err, res) => {
             if (err) throw err;
             console.log(`${res.affectedRows} roles deleted!\n`);
+            console.log('Type node server and press ENTER for Main Menu')
+            connection.end();
           }
         );
     })

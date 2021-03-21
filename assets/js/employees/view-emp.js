@@ -10,6 +10,8 @@ const viewEmployees = () => {
             console.log(`${employee_id} | ${first_name} | ${last_name}`);
         });
         console.log('-----------------------------------');
+        console.log('Type node server and press ENTER for Main Menu')
+        connection.end();
     });
 };
 

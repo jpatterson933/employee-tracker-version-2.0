@@ -48,7 +48,7 @@ const editEmployee = () => {
     .then(edit => {
         //---------------------------------
 
-        console.log('Updating Department Name...\n');
+        console.log('Updating Employee Name...\n');
     const query = connection.query(
         `UPDATE employee SET ? WHERE ?`,
         [
@@ -64,11 +64,13 @@ const editEmployee = () => {
         if (err) throw err;
         console.log(`${res.affectedRows} employees updated!\n`);
             //do i need to call my delete function?
+        console.log('Type node server and press ENTER for Main Menu')
+        connection.end();
         }
     );
 
     // logs the actual query being run
-    console.log(query.sql);
+    // console.log(query.sql);
 //-----------------------------------
     })
 }

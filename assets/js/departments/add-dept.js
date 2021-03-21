@@ -27,6 +27,8 @@ const addDepartment = () => {
                 if (err) throw err;
 
                 console.log(`${res.affectedRows} new department!\n`);
+                console.log('Type node server and press ENTER for main menu!')
+                connection.end()
                 // once the option has been inserted will need to call another prompt
             })
     })
