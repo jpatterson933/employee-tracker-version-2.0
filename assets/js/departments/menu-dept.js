@@ -3,6 +3,7 @@ const connection = require('../../../config/connection');
 const viewDepartments = require('../departments/view-dept')
 const addDepartment = require('../departments/add-dept')
 const deleteDepartment = require('../departments/del-dep')
+const editDepartment = require('../departments/edit-dept')
 
 const departmentsMenu = () => {
     inquirer.prompt ([
@@ -25,6 +26,7 @@ const departmentsMenu = () => {
                 break;
             case 'Edit Departments':
                 console.log('You chose to edit the departments')
+                editDepartment();
                 break;
             case 'Delete Departments':
                 console.log('You are eleminating an entire Department')
