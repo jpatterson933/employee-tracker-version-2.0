@@ -3,6 +3,7 @@ const connection = require('../../../config/connection');
 const viewEmployees = require('./view-emp')
 const addEmployee = require('./add-emp')
 const deleteEmployee = require('./del-emp')
+const editEmployee = require('./edit-emp')
 
 const employeeMenu = () => {
     inquirer.prompt ([
@@ -25,6 +26,7 @@ const employeeMenu = () => {
                 break;
             case 'Edit Employee':
                 console.log('You have chosen to edit an employee')
+                editEmployee()
                 break;
             case 'Delete Employee':
                 console.log('You have chosen to fire someone')
