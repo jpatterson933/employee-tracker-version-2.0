@@ -20,6 +20,7 @@
   "homepage": "https://github.com/jpatterson933/employee-tracker-version-2.0#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
+    "inquirer": "^8.0.0",
     "mysql": "^2.18.1"
   }
 }
