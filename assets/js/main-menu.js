@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const connection = require('../../config/connection');
+const departmentsMenu = require('./departments')
 
 const mainMenu = () => {
     inquirer.prompt ([
@@ -14,6 +15,7 @@ const mainMenu = () => {
         switch (menuChoice.menu) {
             case 'Departments':
                 console.log('You choose departments')
+                departmentsMenu();
                 break;
             case 'Employee Roles':
                 console.log('You choose employee roles')
