@@ -7,7 +7,7 @@ const deleteRole = () => {
             type: 'input',
             message: 'Enter a Role',
             name: 'role',
-            //is there a way to make this a list that populates from the already existing departments?
+            //is there a way to make this a list that populates from the already existing roles?
             validate: checkInput => {
                 if (checkInput) {
                     return true;
@@ -20,7 +20,7 @@ const deleteRole = () => {
     ])
     .then(del => {
         //need to add validation that role exists
-        console.log('Deleting department...\n');
+        console.log('Deleting role...\n');
         connection.query(
           'DELETE FROM role WHERE ?',
           {

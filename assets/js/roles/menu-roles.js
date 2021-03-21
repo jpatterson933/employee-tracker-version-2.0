@@ -3,6 +3,7 @@ const connection = require('../../../config/connection');
 const viewRoles = require('./view-roles')
 const addRole = require('./add-role');
 const deleteRole = require('./del-role')
+const editRole = require('./edit-role')
 
 const rolesMenu = () => {
     inquirer.prompt ([
@@ -25,6 +26,7 @@ const rolesMenu = () => {
                 break;
             case 'Edit Role':
                 console.log('You have chosen to edit role')
+                editRole();
                 break;
             case 'Delete Role':
                 console.log('You have chose to delete a role')
