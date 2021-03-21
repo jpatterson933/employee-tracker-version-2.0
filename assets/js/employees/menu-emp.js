@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const connection = require('../../../config/connection');
+const viewEmployees = require('./view-emp')
 
 const employeeMenu = () => {
     inquirer.prompt ([
@@ -14,6 +15,7 @@ const employeeMenu = () => {
         switch (menuChoice.empMenu) {
             case 'View Employees':
                 console.log('You have chosen to view employees')
+                viewEmployees();
                 break;
             case 'Add Employee':
                 console.log('You ahve chosen to add an employee')
