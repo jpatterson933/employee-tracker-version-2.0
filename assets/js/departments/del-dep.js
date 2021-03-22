@@ -1,21 +1,27 @@
 const inquirer = require('inquirer');
 const connection = require('../../../config/connection');
 
+let departmentId = [];
+let deptDisplay = [];
+
+const viewDept = async () => {
+    const departmentName = connection.query('SELECT * FROM department', (err, res) => {
+        if (err) throw err;
+        res.forEach(({ department_id, department_name }) => {
+            departmentId.push(department_id)
+            deptDisplay.push(`-- ${department_name} : ${department_id} --`)
+        })
+    });
+};
+viewDept();
+
 const deleteDepartment = () => {
     inquirer.prompt ([
         {
-            type: 'input',
-            message: 'Enter a Department',
+            type: 'list',
+            message: `${deptDisplay}`,
             name: 'department',
-            //is there a way to make this a list that populates from the already existing departments?
-            validate: checkInput => {
-                if (checkInput) {
-                    return true;
-                } else {
-                    console.log(`Please enter a department name!`)
-                    return false;
-                }
-            }            
+            choices: departmentId       
         }
     ])
     .then(del => {
@@ -26,7 +32,7 @@ const deleteDepartment = () => {
         connection.query(
           'DELETE FROM department WHERE ?',
           {
-            department_name: `${del.department}`,
+            department_id: `${del.department}`,
           },
           (err, res) => {
             if (err) throw err;

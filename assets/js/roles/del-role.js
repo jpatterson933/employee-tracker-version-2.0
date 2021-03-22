@@ -1,21 +1,27 @@
 const inquirer = require('inquirer');
 const connection = require('../../../config/connection');
 
+let roleId = [];
+let roleDisplay = [];
+
+const viewRole = async () => {
+  const roleName = connection.query('SELECT * FROM role', (err, res) => {
+      if (err) throw err;
+      res.forEach(({ role_id, title }) => {
+          roleId.push(role_id)
+          roleDisplay.push(`-- ${title}: ${role_id} --`)
+      })
+  });
+};
+viewRole()
+
 const deleteRole = () => {
     inquirer.prompt ([
         {
-            type: 'input',
-            message: 'Enter a Role',
+            type: 'list',
+            message: `${roleDisplay}`,
             name: 'role',
-            //is there a way to make this a list that populates from the already existing roles?
-            validate: checkInput => {
-                if (checkInput) {
-                    return true;
-                } else {
-                    console.log(`Please enter a valid Role!`)
-                    return false;
-                }
-            }            
+            choices: roleId            
         }
     ])
     .then(del => {
@@ -24,7 +30,7 @@ const deleteRole = () => {
         connection.query(
           'DELETE FROM role WHERE ?',
           {
-            title: `${del.role}`,
+            role_id: `${del.role}`,
           },
           (err, res) => {
             if (err) throw err;
