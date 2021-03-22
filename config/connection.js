@@ -14,8 +14,8 @@ const connection = mysql.createConnection({
 
 connection.connect((err) => {
   if (err) throw err;
-  //show us how we are connected
-  console.log(`connected as id ${connection.threadId}`);
+  //show us how we are connected --not implemented
+  // console.log(`connected as id ${connection.threadId}`);
 // we do not want our connection to end -- yet
 //   connection.end();
 });

@@ -1,6 +1,19 @@
 const inquirer = require('inquirer');
 const connection = require('../../../config/connection');
 
+let departmentId = [];
+let deptDisplay = [];
+
+const viewDept = async () => {
+    const departmentName = connection.query('SELECT * FROM department', (err, res) => {
+        if (err) throw err;
+        res.forEach(({ department_id, department_name }) => {
+            departmentId.push(department_id)
+            deptDisplay.push(`-- ${department_name} : ${department_id} --`)
+        })
+    });
+};
+
 const deleteEmployee = () => {
     inquirer.prompt ([
         {
