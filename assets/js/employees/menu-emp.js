@@ -4,6 +4,7 @@ const viewEmployees = require('./view-emp')
 const addEmployee = require('./add-emp')
 const deleteEmployee = require('./del-emp')
 const editEmployee = require('./edit-emp')
+const mainMenu = require('../main-menu')
 
 const employeeMenu = () => {
     inquirer.prompt ([

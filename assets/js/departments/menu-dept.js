@@ -4,6 +4,7 @@ const viewDepartments = require('../departments/view-dept')
 const addDepartment = require('../departments/add-dept')
 const deleteDepartment = require('../departments/del-dep')
 const editDepartment = require('../departments/edit-dept')
+const mainMenu = require('../main-menu')
 
 const departmentsMenu = () => {
     inquirer.prompt ([
