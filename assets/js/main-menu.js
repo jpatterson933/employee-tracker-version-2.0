@@ -29,7 +29,7 @@ const mainMenu = () => {
                 employeeMenu();
                 break;
             case 'Exit':
-                console.log('Goodbye! Type Node Server to restart the Employee Management System!')
+                console.log('Goodbye! Type node server to restart the Employee Management System!')
                 //why does this work here but not inside my other functions?
                 // return mainMenu();
                 //we will turn this on once we finalize the application

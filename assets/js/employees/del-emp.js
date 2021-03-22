@@ -1,34 +1,28 @@
 const inquirer = require('inquirer');
 const connection = require('../../../config/connection');
 
-let departmentId = [];
-let deptDisplay = [];
+let empId = [];
+let empDisplay = [];
 
-const viewDept = async () => {
-    const departmentName = connection.query('SELECT * FROM department', (err, res) => {
+const viewEmp = async () => {
+    const departmentName = connection.query('SELECT * FROM employee', (err, res) => {
         if (err) throw err;
-        res.forEach(({ department_id, department_name }) => {
-            departmentId.push(department_id)
-            deptDisplay.push(`-- ${department_name} : ${department_id} --`)
+        res.forEach(({ employee_id, first_name }) => {
+            empId.push(employee_id)
+            empDisplay.push(`-- ${first_name} : ${employee_id} --`)
         })
     });
 };
 
+viewEmp();
+
 const deleteEmployee = () => {
     inquirer.prompt ([
         {
-            type: 'input',
-            message: 'Enter an Employee First Name',
-            name: 'firstName',
-            //is there a way to make this a list that populates from the already existing roles?
-            validate: checkInput => {
-                if (checkInput) {
-                    return true;
-                } else {
-                    console.log(`Please enter a valid Employee!`)
-                    return false;
-                }
-            }            
+            type: 'list',
+            message: `${empDisplay}`,
+            name: 'emp',
+            choices: empId    
         }
     ])
     .then(del => {
@@ -37,7 +31,7 @@ const deleteEmployee = () => {
         connection.query(
           'DELETE FROM employee WHERE ?',
           {
-            first_name: `${del.firstName}`,
+            employee_id: `${del.emp}`,
           },
           (err, res) => {
             if (err) throw err;
