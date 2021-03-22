@@ -75,6 +75,7 @@ const addRole = () => {
                 connection.end();
             })
     })
+
 }
 
 module.exports = addRole

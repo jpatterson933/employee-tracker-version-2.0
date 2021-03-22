@@ -27,10 +27,26 @@ const addDepartment = () => {
                 if (err) throw err;
 
                 console.log(`${res.affectedRows} new department!\n`);
-                console.log('Type node server and press ENTER for main menu!')
-                connection.end()
+                // console.log('Type node server and press ENTER for main menu!')
+                // connection.end()
                 // once the option has been inserted will need to call another prompt
+                inquirer.prompt ([
+                    {
+                        type: 'confirm',
+                        message: 'Would you like to add another department?',
+                        name: 'add'
+                    }
+                ])
+                .then(choice => {
+                    if (choice.add) {
+                        addDepartment();
+                    }
+                    connection.end()
+                    console.log('Type node server and press ENTER for main menu!')
+                    
+                })
             })
+
     })
 }
 
