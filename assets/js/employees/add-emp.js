@@ -70,9 +70,22 @@ console.log(roleDisplay)
                 if (err) throw err;
 
                 console.log(`${res.affectedRows} new employee!\n`);
-                // once the option has been inserted will need to call another prompt
-                console.log('Type node server and press ENTER for Main Menu')
-                connection.end();
+                inquirer.prompt ([
+                    {
+                        type: 'confirm',
+                        message: 'Would you like to add another employee?',
+                        name: 'add'
+                    }
+                ])
+                .then(choice => {
+                    if (!choice.add) {
+                        connection.end()
+                        console.log('Type node server and press ENTER for main menu!')
+                    } else if (choice.add) {
+                        addEmployee();
+                        return;
+                    }
+                })
             })
     })
 }

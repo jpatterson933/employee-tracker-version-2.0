@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const connection = require('../../../config/connection');
+const cTable = require('console.table')
 
 const addDepartment = () => {
     inquirer.prompt ([
@@ -22,7 +23,11 @@ const addDepartment = () => {
 
         const insert = 'INSERT INTO department SET ?'
 
-        connection.query(insert, {department_name: `${name.deptName}`}, (err, res) => {
+        connection.query(insert, 
+            {
+                department_name: `${name.deptName}`
+            },
+                (err, res) => {
 
                 if (err) throw err;
 
@@ -42,14 +47,11 @@ const addDepartment = () => {
                         connection.end()
                         console.log('Type node server and press ENTER for main menu!')
                     } else if (choice.add) {
-                        
                         addDepartment();
                         return;
                     }
-                    
                 })
             })
-
     })
 }
 
