@@ -2,11 +2,26 @@ const inquirer = require('inquirer');
 const connection = require('../../../config/connection');
 const deleteDepartment = require('./del-dep');
 
+let deptDisplay = [];
+//this is our view department funciton which will be used to populate the user choices when the select which department to delete
+const viewDept = async () => {
+    const departmentName = connection.query('SELECT * FROM department', (err, res) => {
+        if (err) throw err;
+        res.forEach(({ department_id, department_name }) => {
+            deptDisplay.push(`( ${department_name} )`)
+        })
+    });
+};
+
+viewDept();
+
+//this is our edit department funciton
 const editDepartment = () => {
+    
     inquirer.prompt ([
         {
             type: 'input',
-            message: 'Please enter Department you would like to edit',
+            message: `Current Departments \n ${deptDisplay}\n Please Enter a Department name`,
             name: 'oldName',
             validate: checkInput => {
                 if (checkInput) {

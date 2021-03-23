@@ -3,7 +3,7 @@ const connection = require('../../../config/connection');
 
 let departmentId = [];
 let deptDisplay = [];
-
+//this is our view department funciton which will be used to populate the user choices when the select which department to delete
 const viewDept = async () => {
     const departmentName = connection.query('SELECT * FROM department', (err, res) => {
         if (err) throw err;
@@ -14,9 +14,9 @@ const viewDept = async () => {
     });
 };
 
-
+viewDept();
+//this is our delete department function
 const deleteDepartment = () => {
-    viewDept();
     inquirer.prompt ([
         {
             type: 'list',
@@ -26,9 +26,7 @@ const deleteDepartment = () => {
         }
     ])
     .then(del => {
-
-
-        //need to add validation that department exists
+        //lets user know that the department is being deleted
         console.log('Deleting department...\n');
         connection.query(
           'DELETE FROM department WHERE ?',
@@ -50,13 +48,12 @@ const deleteDepartment = () => {
                 connection.end()
                 console.log('Type node server and press ENTER for main menu!')
               } else if (choice.del) {
+                //note when the user deletes a department and wnats to delete another one
+                  //it will not remove the department from the display when the funciton is rerun
                 deleteDepartment();
                 return;
-              }
-              
+              }   
           })
-            // console.log('Type node server and press ENTER for Main Menu')
-            // connection.end();
           }
         );
     })

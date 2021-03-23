@@ -42,6 +42,7 @@ const addDepartment = () => {
                         connection.end()
                         console.log('Type node server and press ENTER for main menu!')
                     } else if (choice.add) {
+                        
                         addDepartment();
                         return;
                     }
