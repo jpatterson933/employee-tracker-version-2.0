@@ -38,11 +38,13 @@ const addDepartment = () => {
                     }
                 ])
                 .then(choice => {
-                    if (choice.add) {
+                    if (!choice.add) {
+                        connection.end()
+                        console.log('Type node server and press ENTER for main menu!')
+                    } else if (choice.add) {
                         addDepartment();
+                        return;
                     }
-                    connection.end()
-                    console.log('Type node server and press ENTER for main menu!')
                     
                 })
             })

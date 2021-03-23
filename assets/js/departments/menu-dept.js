@@ -36,7 +36,7 @@ const departmentsMenu = () => {
             case 'Exit':
                 console.log('Goodbye! Type node server to pull up main menu!')
                 //need to add an exit function
-                return mainMenu();
+                // return mainMenu();
                 connection.end();
                 break;
         }
