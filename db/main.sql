@@ -8,12 +8,6 @@ CREATE TABLE department (
     department_name VARCHAR(30),
     PRIMARY KEY (department_id)
 );
-SELECT department_name FROM department;
-
-SELECT * FROM department;
-
-INSERT INTO department (department_name)
-VALUES('Front of House');
 
 CREATE TABLE role (
     role_id INT AUTO_INCREMENT,   
@@ -26,13 +20,6 @@ CREATE TABLE role (
         REFERENCES department (department_id)
         ON DELETE CASCADE
 );
-
-INSERT INTO role (title, salary)
-VALUES ('Manager', 123000.30);
-
-SELECT * FROM department;
-SELECT * FROM role;
-SELECT * FROM employee;
 
 CREATE TABLE employee (
     employee_id INT AUTO_INCREMENT,
