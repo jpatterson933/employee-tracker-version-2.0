@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const connection = require('../../../config/connection');
+const connection = require('../config/connection');
 const viewEmployees = require('./view-emp')
 const addEmployee = require('./add-emp')
 const deleteEmployee = require('./del-emp')

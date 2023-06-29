@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const connection = require('../../../config/connection');
+const connection = require('../config/connection');
 const deleteDepartment = require('./del-dep');
 
 let deptDisplay = [];

@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const connection = require('../../../config/connection');
+const connection = require('../config/connection');
 const viewRoles = require('./view-roles')
 const addRole = require('./add-role');
 const deleteRole = require('./del-role')

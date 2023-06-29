@@ -1,11 +1,11 @@
 const inquirer = require('inquirer');
-const connection = require('../../config/connection');
+const connection = require('./config/connection');
 const departmentsMenu = require('./departments/menu-dept')
 const rolesMenu = require('./roles/menu-roles')
 const employeeMenu = require('./employees/menu-emp')
 
 
-const mainMenu = () => {
+const mainMenu = async () => {
     inquirer.prompt ([
         {
             type: 'list',
@@ -39,4 +39,5 @@ const mainMenu = () => {
     })
 }
 
-module.exports = mainMenu
+
+module.exports = mainMenu;

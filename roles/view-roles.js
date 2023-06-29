@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const connection = require('../../../config/connection');
+const connection = require('../config/connection');
 
 //this function allows for us to view all of our
 const viewRoles = () => {

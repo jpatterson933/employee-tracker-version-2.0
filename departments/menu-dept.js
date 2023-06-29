@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const connection = require('../../../config/connection');
+const connection = require('../config/connection');
 const viewDepartments = require('../departments/view-dept')
 const addDepartment = require('../departments/add-dept')
 const deleteDepartment = require('../departments/del-dep')
