@@ -7,12 +7,15 @@ const editRole = () => {
         inquirer
             .prompt([
                 {
-
+                    type: 'confirm',
+                    message: 'Are you sure you want to edit a role?',
+                    name: 'edit'
                 },
                 {
-                    type: 'input',
+                    type: 'list',
                     message: 'Please enter a Role you would like to edit',
                     name: 'oldTitle',
+                    choices: this.roles,
                     validate: checkInput => checkInput ? true : (console.log('Please enter a role name!'), false)
                 },
                 {

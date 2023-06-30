@@ -46,7 +46,9 @@ class Role {
                                 break;
                             case 'Delete Role':
                                 console.log('You have chosen to delete a role');
-                                deleteRole();
+                                // deleteRole();
+                                this.getRoles();
+                                this.delete();
                                 break;
                             case 'Exit':
                                 console.log('Goodbye! Type node server to pull up main menu!');
@@ -86,7 +88,7 @@ class Role {
             connection.query(query, (err, res) => {
                 try {
                     this.roles.splice(0, this.roles.length);
-                    res.forEach(({title }) => {
+                    res.forEach(({ title }) => {
                         this.roles.push(title);
                     });
 
@@ -248,10 +250,47 @@ class Role {
     };
 
 
-    delete(){
-        try{
-
-        } catch(err){
+    delete() {
+        try {
+            inquirer
+                .prompt([
+                    {
+                        type: 'confirm',
+                        message: 'Are you sure you want to remove role?',
+                        name: 'delete'
+                    },
+                    {
+                        type: 'list',
+                        message: 'Please choose a role to delete',
+                        name: 'role',
+                        choices: this.roles
+                    }
+                ])
+                .then(({ role }) => {
+                    try {
+                        //need to add validation that role exists
+                        console.log('Deleting role...\n');
+                        const query = 'DELETE FROM role WHERE ?';
+                        connection.query(query,
+                            {
+                                title: `${role}`,
+                            },
+                            (err, res) => {
+                                console.log(res)
+                                if(err) console.log(err);
+                                try {
+                                    console.log(`${res.affectedRows} roles deleted!\n`);
+                                    this.menu();
+                                } catch (err) {
+                                    console.log(err);
+                                };
+                            }
+                        );
+                    } catch (err) {
+                        console.log(err);
+                    };
+                });
+        } catch (err) {
             console.log(err);
         };
 

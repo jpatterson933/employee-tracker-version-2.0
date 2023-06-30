@@ -6,40 +6,52 @@ let roleDisplay = [];
 
 const viewRole = async () => {
   const roleName = connection.query('SELECT * FROM role', (err, res) => {
-      if (err) throw err;
-      res.forEach(({ role_id, title }) => {
-          roleId.push(role_id)
-          roleDisplay.push(`-- ${title}: ${role_id} --`)
-      })
+    if (err) throw err;
+    res.forEach(({ role_id, title }) => {
+      roleId.push(role_id)
+      roleDisplay.push(`-- ${title}: ${role_id} --`)
+    })
   });
 };
 viewRole()
 
 const deleteRole = () => {
-    inquirer.prompt ([
-        {
-            type: 'list',
-            message: `${roleDisplay}`,
-            name: 'role',
-            choices: roleId            
-        }
+  inquirer
+    .prompt([
+      {
+        type: 'confirm',
+        message: 'Are you sure you want to remove role?',
+        name: 'delete'
+      },
+      {
+        type: 'list',
+        message: 'Please choose a role to delete',
+        name: 'role',
+        choices: this.roles
+      }
     ])
-    .then(del => {
+    .then(({ role }) => {
+      try {
         //need to add validation that role exists
         console.log('Deleting role...\n');
-        connection.query(
-          'DELETE FROM role WHERE ?',
+        const query = 'DELETE FROM role WHERE ?';
+        connection.query(query,
           {
-            role_id: `${del.role}`,
+            role_id: `${role}`,
           },
           (err, res) => {
-            if (err) throw err;
-            console.log(`${res.affectedRows} roles deleted!\n`);
-            console.log('Type node server and press ENTER for Main Menu')
-            connection.end();
+            try {
+              console.log(`${res.affectedRows} roles deleted!\n`);
+              this.menu();
+            } catch (err) {
+              console.log(err);
+            };
           }
         );
-    })
-  };
+      } catch (err) {
+        console.log(err);
+      };
+    });
+};
 
-  module.exports = deleteRole
+module.exports = deleteRole
