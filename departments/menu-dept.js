@@ -4,7 +4,6 @@ const connection = require('../config/connection');
 class Department {
     constructor() {
         this.departments = []
-
     }
 
     menu() {
@@ -14,14 +13,14 @@ class Department {
                     {
                         type: 'list',
                         message: 'Departments Menu',
-                        name: 'deptMenu',
+                        name: 'menuChoice',
                         choices: ['View Departments', 'Add Departments', 'Edit Departments', 'Delete Departments', 'Exit']
                     }
                 ])
-                .then(menuChoice => {
+                .then(({menuChoice}) => {
                     try {
 
-                        switch (menuChoice.deptMenu) {
+                        switch (menuChoice) {
                             case 'View Departments':
                                 console.log('You chose view departments')
                                 this.view();
@@ -56,17 +55,20 @@ class Department {
 
     async getDepartments() {
         try {
-            connection.query('SELECT * FROM department', (err, res) => {
-                if (err) throw err;
-                res.forEach(({ department_name }) => {
-                    this.departments.push(department_name);
-                })
+            const query = 'SELECT * FROM department';
+            connection.query(query, (err, res) => {
+                try {
+                    res.forEach(({ department_name }) => {
+                        this.departments.push(department_name);
+                    })
+                } catch (err) {
+                    console.log(err);
+                };
             });
         } catch (err) {
             console.log(err);
         };
     };
-
 
     view() {
         try {
@@ -85,7 +87,6 @@ class Department {
                 } catch (err) {
                     console.log(err);
                 };
-                // connection.end();
             });
         } catch (err) {
             console.log(err);
@@ -107,38 +108,45 @@ class Department {
                     try {
                         console.log('Inserting a new departments...\n');
 
-                        const insert = 'INSERT INTO department SET ?'
+                        const query = 'INSERT INTO department SET ?'
 
-                        connection.query(insert,
+                        connection.query(query,
                             {
                                 department_name: `${deptName}`
                             },
                             (err, res) => {
-
-
-                                console.log(`${res.affectedRows} new department!\n`);
-                                // once the option has been inserted will need to call another prompt
-                                inquirer.prompt([
-                                    {
-                                        type: 'confirm',
-                                        message: 'Would you like to add another department?',
-                                        name: 'add'
-                                    }
-                                ])
-                                    .then(({ add }) => {
-                                        if (!add) {
-                                            // connection.end()
-                                            this.menu();
-                                            console.log('Type node server and press ENTER for main menu!');
-                                        } else if (add) {
-                                            this.add();
-                                            return;
-                                        };
-                                    });
+                                try {
+                                    console.log(`${res.affectedRows} new department!\n`);
+                                    // once the option has been inserted will need to call another prompt
+                                    inquirer
+                                        .prompt([
+                                            {
+                                                type: 'confirm',
+                                                message: 'Would you like to add another department?',
+                                                name: 'add'
+                                            }
+                                        ])
+                                        .then(({ add }) => {
+                                            try {
+                                                if (!add) {
+                                                    // connection.end()
+                                                    this.menu();
+                                                    console.log('Type node server and press ENTER for main menu!');
+                                                } else if (add) {
+                                                    this.add();
+                                                    return;
+                                                };
+                                            } catch (err) {
+                                                console.log(err);
+                                            }
+                                        });
+                                } catch (err) {
+                                    console.log(err);
+                                };
                             });
                     } catch (err) {
                         console.log(err);
-                    }
+                    };
                 });
         } catch (err) {
             console.log(err);
@@ -197,8 +205,6 @@ class Department {
                         console.log(err);
                     };
                 });
-
-
         } catch (err) {
             console.log(err);
         };
@@ -241,18 +247,22 @@ class Department {
                                             }
                                         ])
                                         .then(({ del }) => {
-                                            if (!del) {
-                                                // connection.end()
-                                                this.menu();
-                                                // console.log('Type node server and press ENTER for main menu!')
-                                            } else if (del) {
-                                                //note when the user deletes a department and wnats to delete another one
-                                                //it will not remove the department from the display when the funciton is rerun
-                                                // deleteDepartment();
-                                                this.delete();
-                                                return;
-                                            }
-                                        })
+                                            try {
+                                                if (!del) {
+                                                    // connection.end()
+                                                    this.menu();
+                                                    // console.log('Type node server and press ENTER for main menu!')
+                                                } else if (del) {
+                                                    //note when the user deletes a department and wnats to delete another one
+                                                    //it will not remove the department from the display when the funciton is rerun
+                                                    // deleteDepartment();
+                                                    this.delete();
+                                                    return;
+                                                }
+                                            } catch (err) {
+                                                console.log(err);
+                                            };
+                                        });
                                 } catch (err) {
                                     console.log(err);
                                 };
@@ -266,7 +276,6 @@ class Department {
             console.log(err);
         };
     };
-
 
 };
 
