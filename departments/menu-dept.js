@@ -46,7 +46,9 @@ class Department {
                         break;
                     case 'Delete Departments':
                         console.log('You are eleminating an entire Department')
-                        deleteDepartment();
+                        // deleteDepartment();
+                        this.getDepartments();
+                        this.delete();
                         break;
                     case 'Exit':
                         console.log('Goodbye! Type node server to pull up main menu!')
@@ -195,6 +197,69 @@ class Department {
                 });
 
 
+        } catch (err) {
+            console.log(err);
+        };
+    };
+
+    delete() {
+        try {
+            inquirer
+                .prompt([
+                    {
+                        type: 'confirm',
+                        message: 'Are you sure you want to delete a department?',
+                        name: 'delete'
+                    },
+                    {
+                        type: 'list',
+                        message: 'Please choose a department to delete',
+                        name: 'department',
+                        choices: this.departments
+                    }
+                ])
+                .then(({ department }) => {
+                    try {
+                        const query = 'DELETE FROM department WHERE ?';
+                        //lets user know that the department is being deleted
+                        console.log('Deleting department...\n');
+                        connection.query(query,
+                            {
+                                department_name: `${department}`,
+                            },
+                            (err, res) => {
+                                try {
+                                    console.log(`${res.affectedRows} departments deleted!\n`);
+                                    inquirer
+                                        .prompt([
+                                            {
+                                                type: 'confirm',
+                                                message: 'Would you like to add another department?',
+                                                name: 'del'
+                                            }
+                                        ])
+                                        .then(({ del }) => {
+                                            if (!del) {
+                                                // connection.end()
+                                                this.menu();
+                                                // console.log('Type node server and press ENTER for main menu!')
+                                            } else if (del) {
+                                                //note when the user deletes a department and wnats to delete another one
+                                                //it will not remove the department from the display when the funciton is rerun
+                                                // deleteDepartment();
+                                                this.delete();
+                                                return;
+                                            }
+                                        })
+                                } catch (err) {
+                                    console.log(err);
+                                };
+                            }
+                        );
+                    } catch (err) {
+                        console.log(err);
+                    };
+                });
         } catch (err) {
             console.log(err);
         };
