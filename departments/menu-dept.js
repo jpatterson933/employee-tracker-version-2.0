@@ -17,48 +17,51 @@ class Department {
 
 
     menu() {
-        inquirer
-            .prompt([
-                {
-                    type: 'list',
-                    message: 'Departments Menu',
-                    name: 'deptMenu',
-                    choices: ['View Departments', 'Add Departments', 'Edit Departments', 'Delete Departments', 'Exit']
-                }
-            ])
-            .then(menuChoice => {
-                switch (menuChoice.deptMenu) {
-                    case 'View Departments':
-                        console.log('You chose view departments')
-                        // viewDepartments();
-                        this.view();
-                        break;
-                    case 'Add Departments':
-                        console.log('You chose to add a department')
-                        // addDepartment();
-                        this.add();
-                        break;
-                    case 'Edit Departments':
-                        console.log('You chose to edit the departments')
-                        // editDepartment();
-                        this.getDepartments();
-                        this.edit();
-                        break;
-                    case 'Delete Departments':
-                        console.log('You are eleminating an entire Department')
-                        // deleteDepartment();
-                        this.getDepartments();
-                        this.delete();
-                        break;
-                    case 'Exit':
-                        console.log('Goodbye! Type node server to pull up main menu!')
-                        //need to add an exit function
-                        // return mainMenu();
-                        connection.end();
-                        break;
-                }
-            })
-    }
+        try {
+            inquirer
+                .prompt([
+                    {
+                        type: 'list',
+                        message: 'Departments Menu',
+                        name: 'deptMenu',
+                        choices: ['View Departments', 'Add Departments', 'Edit Departments', 'Delete Departments', 'Exit']
+                    }
+                ])
+                .then(menuChoice => {
+                    try {
+
+                        switch (menuChoice.deptMenu) {
+                            case 'View Departments':
+                                console.log('You chose view departments')
+                                this.view();
+                                break;
+                            case 'Add Departments':
+                                console.log('You chose to add a department')
+                                this.add();
+                                break;
+                            case 'Edit Departments':
+                                console.log('You chose to edit the departments')
+                                this.getDepartments();
+                                this.edit();
+                                break;
+                            case 'Delete Departments':
+                                console.log('You are eleminating an entire Department')
+                                this.getDepartments();
+                                this.delete();
+                                break;
+                            case 'Exit':
+                                console.log('Goodbye! Type node server to pull up main menu!')
+                                connection.end();
+                                break;
+                        };
+                    } catch (err) {
+                        console.log(err);
+                    }
+                });
+        } catch (err) {
+            console.log(err);
+        };
+    };
 
     async getDepartments() {
         try {
