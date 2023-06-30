@@ -12,7 +12,6 @@ class Role {
         this.roles = [];
     };
 
-
     menu() {
         try {
             inquirer
@@ -29,24 +28,20 @@ class Role {
                         switch (menuChoice) {
                             case 'View Roles':
                                 console.log('You have chosen to view roles');
-                                // viewRoles();
                                 this.view();
                                 break;
                             case 'Add Role':
                                 console.log('You have chosen to add a role');
-                                // addRole();
                                 this.getDepartments();
                                 this.add();
                                 break;
                             case 'Edit Role':
                                 console.log('You have chosen to edit role');
-                                // editRole();
                                 this.getRoles();
                                 this.edit();
                                 break;
                             case 'Delete Role':
                                 console.log('You have chosen to delete a role');
-                                // deleteRole();
                                 this.getRoles();
                                 this.delete();
                                 break;
@@ -249,7 +244,6 @@ class Role {
         };
     };
 
-
     delete() {
         try {
             inquirer
@@ -268,7 +262,6 @@ class Role {
                 ])
                 .then(({ role }) => {
                     try {
-                        //need to add validation that role exists
                         console.log('Deleting role...\n');
                         const query = 'DELETE FROM role WHERE ?';
                         connection.query(query,
@@ -293,49 +286,7 @@ class Role {
         } catch (err) {
             console.log(err);
         };
-
     };
-};
-
-const rolesMenu = () => {
-    inquirer
-        .prompt([
-            {
-                type: 'list',
-                message: 'Employee Roles Menu',
-                name: 'menuChoice',
-                choices: ['View Roles', 'Add Role', 'Edit Role', 'Delete Role', 'Exit']
-            }
-        ])
-        .then(({ menuChoice }) => {
-            try {
-                switch (menuChoice) {
-                    case 'View Roles':
-                        console.log('You have chosen to view roles');
-                        viewRoles();
-                        break;
-                    case 'Add Role':
-                        console.log('You have chosen to add a role');
-                        addRole();
-                        break;
-                    case 'Edit Role':
-                        console.log('You have chosen to edit role');
-                        editRole();
-                        break;
-                    case 'Delete Role':
-                        console.log('You have chosen to delete a role');
-                        deleteRole();
-                        break;
-                    case 'Exit':
-                        console.log('Goodbye! Type node server to pull up main menu!');
-                        connection.end();
-                        break;
-                }
-            } catch (err) {
-                console.log(err);
-            };
-        });
-
 };
 
 module.exports = Role;
