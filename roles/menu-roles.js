@@ -9,6 +9,7 @@ const mainMenu = require('../main-menu')
 class Role {
     constructor() {
         this.departments = [];
+        this.roles = [];
     };
 
 
@@ -39,7 +40,9 @@ class Role {
                                 break;
                             case 'Edit Role':
                                 console.log('You have chosen to edit role');
-                                editRole();
+                                // editRole();
+                                this.getRoles();
+                                this.edit();
                                 break;
                             case 'Delete Role':
                                 console.log('You have chosen to delete a role');
@@ -77,6 +80,25 @@ class Role {
         };
     };
 
+    getRoles() {
+        try {
+            const query = 'SELECT * FROM role';
+            connection.query(query, (err, res) => {
+                try {
+                    this.roles.splice(0, this.roles.length);
+                    res.forEach(({title }) => {
+                        this.roles.push(title);
+                    });
+
+                } catch (err) {
+                    console.log(err);
+                };
+            });
+        } catch (err) {
+            console.log(err);
+        };
+    };
+
     view() {
         try {
             connection.query('SELECT * FROM role', (err, res) => {
@@ -99,26 +121,27 @@ class Role {
     add() {
         try {
             try {
-                inquirer.prompt([
-                    {
-                        type: 'input',
-                        message: 'Please enter a Role Title',
-                        name: 'title',
-                        validate: checkInput => checkInput ? true : (console.log('Please enter a role title'), false)
-                    },
-                    {
-                        type: 'number',
-                        message: 'Enter Salary',
-                        name: 'salary',
-                        validate: checkInput => checkInput ? true : (console.log('Please enter a valid role title!'), false)
-                    },
-                    {
-                        type: 'list',
-                        message: 'Please choose a department',
-                        name: 'department',
-                        choices: this.departments
-                    }
-                ])
+                inquirer
+                    .prompt([
+                        {
+                            type: 'input',
+                            message: 'Please enter a Role Title',
+                            name: 'title',
+                            validate: checkInput => checkInput ? true : (console.log('Please enter a role title'), false)
+                        },
+                        {
+                            type: 'number',
+                            message: 'Enter Salary',
+                            name: 'salary',
+                            validate: checkInput => checkInput ? true : (console.log('Please enter a valid role title!'), false)
+                        },
+                        {
+                            type: 'list',
+                            message: 'Please choose a department',
+                            name: 'department',
+                            choices: this.departments
+                        }
+                    ])
                     .then(({ title, salary, department }) => {
                         try {
                             console.log('Inserting a new role...\n');
@@ -132,13 +155,14 @@ class Role {
                                 (err, res) => {
                                     try {
                                         console.log(`${res.affectedRows} new role!\n`);
-                                        inquirer.prompt([
-                                            {
-                                                type: 'confirm',
-                                                message: 'Would you like to add another role?',
-                                                name: 'add'
-                                            }
-                                        ])
+                                        inquirer
+                                            .prompt([
+                                                {
+                                                    type: 'confirm',
+                                                    message: 'Would you like to add another role?',
+                                                    name: 'add'
+                                                }
+                                            ])
                                             .then(({ add }) => {
                                                 if (!add) {
                                                     this.menu();
@@ -160,6 +184,77 @@ class Role {
         } catch (err) {
             console.log(err);
         };
+    };
+
+    edit() {
+        try {
+            inquirer
+                .prompt([
+                    {
+                        type: 'confirm',
+                        message: 'Are you sure you want to edit a role?',
+                        name: 'edit'
+                    },
+                    {
+                        type: 'list',
+                        message: 'Please enter a Role you would like to edit',
+                        name: 'oldTitle',
+                        choices: this.roles,
+                        validate: checkInput => checkInput ? true : (console.log('Please enter a role name!'), false)
+                    },
+                    {
+                        type: 'input',
+                        message: 'Enter new role title',
+                        name: 'newTitle',
+                        validate: checkInput => checkInput ? true : (console.log('Please enter a department name!'), false)
+                    },
+                    {
+                        type: 'number',
+                        message: 'Enter new salary',
+                        name: 'newSal',
+                        validate: checkInput => checkInput ? true : (console.log('Please enter a role salary!'), false)
+                    }
+                ])
+                .then(({ oldTitle, newTitle, newSal }) => {
+                    try {
+                        console.log('Updating Role Name...\n');
+                        const query = 'UPDATE role SET ? WHERE ?';
+                        connection.query(query,
+                            [
+                                {
+                                    title: `${newTitle}`,
+                                    salary: `${newSal}`
+                                },
+                                {
+                                    title: `${oldTitle}`
+                                }
+                            ],
+                            (err, res) => {
+                                try {
+                                    console.log(`${res.affectedRows} roles updated!\n`);
+                                    this.menu();
+                                } catch (err) {
+                                    console.log(err);
+                                };
+                            }
+                        );
+                    } catch (err) {
+                        console.log(err);
+                    };
+                });
+        } catch (err) {
+            console.log(err);
+        };
+    };
+
+
+    delete(){
+        try{
+
+        } catch(err){
+            console.log(err);
+        };
+
     };
 };
 
