@@ -99,48 +99,56 @@ class Department {
     };
 
     add() {
-        inquirer
-            .prompt([
-                {
-                    type: 'input',
-                    message: 'Please enter a Department Name',
-                    name: 'deptName',
-                    validate: checkInput => checkInput ? true : (console.log('Please enter a department name!'), false)
-                }
-            ])
-            .then(({ deptName }) => {
-                console.log('Inserting a new departments...\n');
-
-                const insert = 'INSERT INTO department SET ?'
-
-                connection.query(insert,
+        try {
+            inquirer
+                .prompt([
                     {
-                        department_name: `${deptName}`
-                    },
-                    (err, res) => {
+                        type: 'input',
+                        message: 'Please enter a Department Name',
+                        name: 'deptName',
+                        validate: checkInput => checkInput ? true : (console.log('Please enter a department name!'), false)
+                    }
+                ])
+                .then(({ deptName }) => {
+                    try {
+                        console.log('Inserting a new departments...\n');
 
+                        const insert = 'INSERT INTO department SET ?'
 
-                        console.log(`${res.affectedRows} new department!\n`);
-                        // once the option has been inserted will need to call another prompt
-                        inquirer.prompt([
+                        connection.query(insert,
                             {
-                                type: 'confirm',
-                                message: 'Would you like to add another department?',
-                                name: 'add'
-                            }
-                        ])
-                            .then(({ add }) => {
-                                if (!add) {
-                                    // connection.end()
-                                    this.menu();
-                                    console.log('Type node server and press ENTER for main menu!');
-                                } else if (add) {
-                                    this.add();
-                                    return;
-                                };
+                                department_name: `${deptName}`
+                            },
+                            (err, res) => {
+
+
+                                console.log(`${res.affectedRows} new department!\n`);
+                                // once the option has been inserted will need to call another prompt
+                                inquirer.prompt([
+                                    {
+                                        type: 'confirm',
+                                        message: 'Would you like to add another department?',
+                                        name: 'add'
+                                    }
+                                ])
+                                    .then(({ add }) => {
+                                        if (!add) {
+                                            // connection.end()
+                                            this.menu();
+                                            console.log('Type node server and press ENTER for main menu!');
+                                        } else if (add) {
+                                            this.add();
+                                            return;
+                                        };
+                                    });
                             });
-                    });
-            });
+                    } catch (err) {
+                        console.log(err);
+                    }
+                });
+        } catch (err) {
+            console.log(err);
+        };
     };
 
     edit() {
