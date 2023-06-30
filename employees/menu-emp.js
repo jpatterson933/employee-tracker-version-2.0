@@ -1,19 +1,17 @@
 const inquirer = require('inquirer');
 const connection = require('../config/connection');
-const viewEmployees = require('./view-emp')
-const addEmployee = require('./add-emp')
-const deleteEmployee = require('./del-emp')
-const editEmployee = require('./edit-emp')
+// const viewEmployees = require('./view-emp')
+// const addEmployee = require('./add-emp')
+// const deleteEmployee = require('./del-emp')
+// const editEmployee = require('./edit-emp')
 const mainMenu = require('../main-menu')
 
 class Employee {
     constructor() {
-
         this.roleId = [];
         this.roleDisplay = [];
         this.employees = [];
-
-    }
+    };
 
     menu() {
         inquirer.prompt([
@@ -27,50 +25,45 @@ class Employee {
             .then(({ response }) => {
                 switch (response) {
                     case 'View Employees':
-                        console.log('You have chosen to view employees')
-                        // viewEmployees();
+                        console.log('You have chosen to view employees');
                         this.view();
                         break;
                     case 'Add Employee':
-                        console.log('You have chosen to add an employee')
-                        // addEmployee();
-                        // this.getRoles();
+                        console.log('You have chosen to add an employee');
                         this.add();
                         break;
                     case 'Edit Employee':
-                        console.log('You have chosen to edit an employee')
-                        // editEmployee()
+                        console.log('You have chosen to edit an employee');
                         this.edit();
                         break;
                     case 'Delete Employee':
-                        console.log('You have chosen to fire someone')
-                        // deleteEmployee();
+                        console.log('You have chosen to fire someone');
                         this.delete();
                         break;
                     case 'Exit':
-                        console.log('Goodbye! Type node server to pull up main menu!')
+                        console.log('Goodbye! Type node server to pull up main menu!');
                         // //need to add an exit function
                         // return mainMenu();
                         connection.end();
                         break;
-                }
-            })
-    }
+                };
+            });
+    };
 
     async getRoles() {
         const query = 'SELECT * FROM role';
         connection.query(query, (err, res) => {
             try {
                 res.forEach(({ role_id, title }) => {
-                    this.roleId.push(role_id)
-                    this.roleDisplay.push(`-- ${title}: ${role_id} --`)
-                })
+                    this.roleId.push(role_id);
+                    this.roleDisplay.push(`-- ${title}: ${role_id} --`);
+                });
 
             } catch (err) {
                 console.log(err);
-            }
+            };
         });
-    }
+    };
 
     async getEmployees() {
         const query = 'SELECT * FROM employee';
@@ -78,13 +71,13 @@ class Employee {
             try {
                 res.forEach(({ first_name }) => {
                     this.employees.push(first_name);
-                })
+                });
             } catch (err) {
                 console.log(err);
-            }
-        })
+            };
+        });
 
-    }
+    };
 
     async add() {
         try {
@@ -114,7 +107,7 @@ class Employee {
                 .then(({ firstName, lastName, roleId }) => {
                     console.log('Inserting a new employee...\n');
 
-                    const query = 'INSERT INTO employee SET ?'
+                    const query = 'INSERT INTO employee SET ?';
 
                     connection.query(query,
                         {
@@ -140,20 +133,21 @@ class Employee {
                                         if (!choice.add) {
                                             this.menu(); // return to main employee menu
                                         } else if (choice.add) {
-                                            addEmployee();
+                                            // addEmployee();
+                                            this.add();
                                             return;
-                                        }
-                                    })
+                                        };
+                                    });
                             } catch (err) {
                                 console.log(err);
-                            }
-                        })
-                })
+                            };
+                        });
+                });
         } catch (err) {
-            console.log(err)
-        }
+            console.log(err);
+        };
 
-    }
+    };
 
     async view() {
         const query = 'SELECT * FROM employee';
@@ -165,14 +159,12 @@ class Employee {
                     console.log(`Employee ID : ${employee_id} | Employee Name : ${first_name} ${last_name} | Role ID : ${role_id}`);
                 });
                 console.log('-----------------------------------');
-                // console.log('Type node server and press ENTER for Main Menu')
-                // connection.end();
                 this.menu();
             } catch (err) {
                 console.log(err);
-            }
+            };
         });
-    }
+    };
 
     async edit() {
         try {
@@ -189,7 +181,6 @@ class Employee {
                     message: 'Please choose an employee to edit',
                     name: 'oldName',
                     choices: this.employees,
-                    // validate: checkInput => checkInput ? true : (console.log('Please enter an employee name!', false))
                 },
                 {
                     type: 'input',
@@ -225,23 +216,20 @@ class Employee {
 
                                 console.log(`${res.affectedRows} employees updated!\n`);
                                 //do i need to call my delete function?
-                                console.log('Type node server and press ENTER for Main Menu')
+                                console.log('Type node server and press ENTER for Main Menu');
                                 // connection.end();
                                 this.menu();
                             } catch (err) {
                                 console.log(err);
-                            }
+                            };
                         }
                     );
 
-                })
+                });
         } catch (err) {
-            console.log(err)
-        }
-    }
-
-
-
+            console.log(err);
+        };
+    };
 
     async delete() {
         try {
@@ -279,51 +267,8 @@ class Employee {
                 })
         } catch (err) {
             console.log(err);
-        }
-
-
-    }
-
-
-
-}
-
-
-const employeeMenu = (menuMessage, choiceArray) => {
-    inquirer.prompt([
-        {
-            type: 'list',
-            message: menuMessage,
-            name: 'response',
-            choices: choiceArray
-        }
-    ])
-        .then(({ response }) => {
-            switch (response) {
-                case 'View Employees':
-                    console.log('You have chosen to view employees')
-                    viewEmployees();
-                    break;
-                case 'Add Employee':
-                    console.log('You ahve chosen to add an employee')
-                    addEmployee();
-                    break;
-                case 'Edit Employee':
-                    console.log('You have chosen to edit an employee')
-                    editEmployee()
-                    break;
-                case 'Delete Employee':
-                    console.log('You have chosen to fire someone')
-                    deleteEmployee();
-                    break;
-                case 'Exit':
-                    console.log('Goodbye! Type node server to pull up main menu!')
-                    // //need to add an exit function
-                    // return mainMenu();
-                    connection.end();
-                    break;
-            }
-        })
-}
+        };
+    };
+};
 
 module.exports = Employee;

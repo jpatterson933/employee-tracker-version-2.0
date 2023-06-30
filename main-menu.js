@@ -1,12 +1,8 @@
 const inquirer = require('inquirer');
 const connection = require('./config/connection');
-const departmentsMenu = require('./departments/menu-dept')
-const rolesMenu = require('./roles/menu-roles')
-const Employee = require('./employees/menu-emp')
-const viewEmployees = require('./employees/view-emp')
-const addEmployee = require('./employees/add-emp')
-const editEmployee = require('./employees/edit-emp')
-const deleteEmployee = require('./employees/del-emp')
+const departmentsMenu = require('./departments/menu-dept');
+const rolesMenu = require('./roles/menu-roles');
+const Employee = require('./employees/menu-emp');
 
 const empMenuChoices = ['View Employees', 'Add Employee', 'Edit Employee', 'Delete Employee', 'Exit'];
 
