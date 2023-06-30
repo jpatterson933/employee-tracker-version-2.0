@@ -12,8 +12,6 @@ const employee = new Employee();
 const department = new Department();
 const mainMenu = async () => {
     try {
-
-
         const { menu } = await inquirer.prompt([
             {
                 type: 'list',
@@ -25,32 +23,25 @@ const mainMenu = async () => {
 
         switch (menu) {
             case 'Departments':
-                console.log('You choose departments')
-                // departmentsMenu();
+                console.log('You choose departments');
                 department.menu();
                 break;
             case 'Employee Roles':
-                console.log('You choose employee roles')
+                console.log('You choose employee roles');
                 rolesMenu();
                 break;
             case 'Employees':
-                console.log('You have chosen Employees')
-                // employeeMenu('Employees Menu', empMenuChoices);
-                // employee.getRoles();
+                console.log('You have chosen Employees');
                 employee.menu();
                 break;
             case 'Exit':
-                console.log('Goodbye! Type node server to restart the Employee Management System!')
-                //why does this work here but not inside my other functions?
-                // return mainMenu();
-                //we will turn this on once we finalize the application
+                console.log('Goodbye! Type node server to restart the Employee Management System!');
                 connection.end();
                 break;
         }
     } catch (err) {
-        console.log(err)
-    }
-}
-
+        console.log(err);
+    };
+};
 
 module.exports = mainMenu;
