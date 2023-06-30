@@ -44,7 +44,8 @@ class Employee {
                         break;
                     case 'Delete Employee':
                         console.log('You have chosen to fire someone')
-                        deleteEmployee();
+                        // deleteEmployee();
+                        this.delete();
                         break;
                     case 'Exit':
                         console.log('Goodbye! Type node server to pull up main menu!')
@@ -176,7 +177,7 @@ class Employee {
     async edit() {
         try {
 
-            await this.getEmployees();
+            this.getEmployees();
             inquirer.prompt([
                 {
                     type: 'confirm',
@@ -204,7 +205,7 @@ class Employee {
                 }
                 //need to add a prompt that allows you to change the users role
             ])
-                .then(({oldName, firstName, lastName}) => {
+                .then(({ oldName, firstName, lastName }) => {
                     //---------------------------------
                     const query = 'UPDATE employee SET ? WHERE ?';
                     console.log('Updating Employee Name...\n');
@@ -219,12 +220,17 @@ class Employee {
                             }
                         ],
                         (err, res) => {
-                            if (err) throw err;
-                            console.log(`${res.affectedRows} employees updated!\n`);
-                            //do i need to call my delete function?
-                            console.log('Type node server and press ENTER for Main Menu')
-                            // connection.end();
-                            this.menu();
+                            // if (err) throw err;
+                            try {
+
+                                console.log(`${res.affectedRows} employees updated!\n`);
+                                //do i need to call my delete function?
+                                console.log('Type node server and press ENTER for Main Menu')
+                                // connection.end();
+                                this.menu();
+                            } catch (err) {
+                                console.log(err);
+                            }
                         }
                     );
 
@@ -232,6 +238,50 @@ class Employee {
         } catch (err) {
             console.log(err)
         }
+    }
+
+
+
+
+    async delete() {
+        try {
+
+            this.getEmployees();
+            inquirer.prompt([
+                {
+                    type: 'confirm',
+                    message: 'Are you sure you want to remove an employee?',
+                    name: 'delete'
+                },
+                {
+                    type: 'list',
+                    message: 'Choose an employee to delete',
+                    name: 'emp',
+                    choices: this.employees
+                }
+            ])
+                .then(({ emp }) => {
+                    //need to add validation that role exists
+                    console.log('Deleting employee...\n');
+                    const query = 'DELETE FROM employee WHERE ?';
+                    connection.query(query,
+                        {
+                            first_name: `${emp}`,
+                        },
+                        (err, res) => {
+                            if (err) throw err;
+                            console.log(`${res.affectedRows} employee deleted!\n`);
+                            // console.log('Type node server and press ENTER for Main Menu')
+                            // connection.end();
+                            this.menu();
+                        }
+                    );
+                })
+        } catch (err) {
+            console.log(err);
+        }
+
+
     }
 
 
