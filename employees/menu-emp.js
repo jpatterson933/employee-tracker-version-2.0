@@ -27,7 +27,8 @@ class Employee {
                 switch (response) {
                     case 'View Employees':
                         console.log('You have chosen to view employees')
-                        viewEmployees();
+                        // viewEmployees();
+                        this.view();
                         break;
                     case 'Add Employee':
                         console.log('You have chosen to add an employee')
@@ -56,7 +57,7 @@ class Employee {
     async getRoles() {
         const query = 'SELECT * FROM role';
         connection.query(query, (err, res) => {
-            try{
+            try {
                 res.forEach(({ role_id, title }) => {
                     this.roleId.push(role_id)
                     this.roleDisplay.push(`-- ${title}: ${role_id} --`)
@@ -93,7 +94,7 @@ class Employee {
                     }
                     //i need to add a role chain here as well as an manager boolean yes or no choice option
                 ])
-                .then(({firstName, lastName, roleId}) => {
+                .then(({ firstName, lastName, roleId }) => {
                     console.log('Inserting a new employee...\n');
 
                     const query = 'INSERT INTO employee SET ?'
@@ -109,23 +110,23 @@ class Employee {
 
                             try {
 
-                            console.log(`${res.affectedRows} new employee!\n`);
+                                console.log(`${res.affectedRows} new employee!\n`);
 
-                            inquirer.prompt([
-                                {
-                                    type: 'confirm',
-                                    message: 'Would you like to add another employee?',
-                                    name: 'add'
-                                }
-                            ])
-                                .then(choice => {
-                                    if (!choice.add) {
-                                        this.menu(); // return to main employee menu
-                                    } else if (choice.add) {
-                                        addEmployee();
-                                        return;
+                                inquirer.prompt([
+                                    {
+                                        type: 'confirm',
+                                        message: 'Would you like to add another employee?',
+                                        name: 'add'
                                     }
-                                })
+                                ])
+                                    .then(choice => {
+                                        if (!choice.add) {
+                                            this.menu(); // return to main employee menu
+                                        } else if (choice.add) {
+                                            addEmployee();
+                                            return;
+                                        }
+                                    })
                             } catch (err) {
                                 console.log(err);
                             }
@@ -135,6 +136,25 @@ class Employee {
             console.log(err)
         }
 
+    }
+
+    async view() {
+        connection.query('SELECT * FROM employee', (err, res) => {
+            if (err) throw err;
+            try {
+
+                //deconstruct
+                res.forEach(({ employee_id, first_name, last_name, role_id }) => {
+                    console.log(`Employee ID : ${employee_id} | Employee Name : ${first_name} ${last_name} | Role ID : ${role_id}`);
+                });
+                console.log('-----------------------------------');
+                // console.log('Type node server and press ENTER for Main Menu')
+                // connection.end();
+                this.menu();
+            } catch (err) {
+                console.log(err);
+            }
+        });
     }
 
 }
