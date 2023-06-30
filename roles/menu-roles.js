@@ -1,10 +1,5 @@
 const inquirer = require('inquirer');
 const connection = require('../config/connection');
-const viewRoles = require('./view-roles')
-const addRole = require('./add-role');
-const deleteRole = require('./del-role')
-const editRole = require('./edit-role')
-const mainMenu = require('../main-menu')
 
 class Role {
     constructor() {
@@ -164,7 +159,7 @@ class Role {
                                                 if (!add) {
                                                     this.menu();
                                                 } else if (add) {
-                                                    addRole();
+                                                    this.add();
                                                 };
                                             });
                                     } catch (err) {
