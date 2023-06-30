@@ -8,6 +8,7 @@ const mainMenu = require('../main-menu')
 
 class Department {
     constructor() {
+        this.departments = []
 
     }
 
@@ -39,7 +40,9 @@ class Department {
                         break;
                     case 'Edit Departments':
                         console.log('You chose to edit the departments')
-                        editDepartment();
+                        // editDepartment();
+                        this.getDepartments();
+                        this.edit();
                         break;
                     case 'Delete Departments':
                         console.log('You are eleminating an entire Department')
@@ -54,6 +57,19 @@ class Department {
                 }
             })
     }
+
+    async getDepartments() {
+        try {
+            connection.query('SELECT * FROM department', (err, res) => {
+                if (err) throw err;
+                res.forEach(({ department_name }) => {
+                    this.departments.push(department_name);
+                })
+            });
+        } catch (err) {
+            console.log(err);
+        };
+    };
 
 
     view() {
@@ -126,56 +142,63 @@ class Department {
     };
 
     edit() {
-        inquirer
-            .prompt([
-                {
-                    type: 'input',
-                    message: `Current Departments \n ${deptDisplay}\n Please Enter a Department name`,
-                    name: 'oldName',
-                    validate: checkInput => {
-                        if (checkInput) {
-                            return true;
-                        } else {
-                            console.log(`Please enter a department name!`)
-                            return false;
-                        }
+        try {
+            inquirer
+                .prompt([
+                    {
+                        type: 'confirm',
+                        message: 'Are you sure you want to edit the departments?',
+                        name: 'edit'
                     },
-                },
-                {
-                    type: 'input',
-                    message: 'Enter new department name',
-                    name: 'newName',
-                    validate: checkInput => checkInput ? true : (console.log("Please enter a department name!"), false)
-                }
-            ])
-            .then(edit => {
-                //---------------------------------
-                const query = 'UPDATE department SET ? WHERE ?';
-                console.log('Updating Department Name...\n');
-                connection.query(query,
-                    [
-                        {
-                            department_name: `${edit.newName}`,
-                        },
-                        {
-                            department_name: `${edit.oldName}`
-                        }
-                    ],
-                    (err, res) => {
-                        if (err) throw err;
-                        console.log(`${res.affectedRows} department updated!\n`);
-                        //do i need to call my delete function?
-                        console.log('Type node server and press ENTER for Main Menu')
-                        // connection.end();
-                        this.menu();
+                    {
+                        type: 'list',
+                        message: 'Please Select a department to edit',
+                        name: 'oldName',
+                        choices: this.departments,
+                        // validate: checkInput => checkInput ? true : (console.log('Please enter a department name!'), false)
+                    },
+                    {
+                        type: 'input',
+                        message: 'Enter new department name',
+                        name: 'newName',
+                        validate: checkInput => checkInput ? true : (console.log("Please enter a department name!"), false)
                     }
-                );
+                ])
+                .then(({ oldName, newName }) => {
+                    //---------------------------------
+                    try {
+                        console.log(oldName, newName, "names here?")
+                        const query = 'UPDATE department SET ? WHERE ?';
+                        console.log('Updating Department Name...\n');
+                        connection.query(query,
+                            [
+                                {
+                                    department_name: `${newName}`,
+                                },
+                                {
+                                    department_name: `${oldName}`
+                                }
+                            ],
+                            (err, res) => {
+                                try {
+                                    console.log(res, "department edit response")
+                                    console.log(`${res.affectedRows} department updated!\n`);
+                                    this.menu();
+                                } catch (err) {
+                                    console.log(err);
+                                }
+                            }
+                        );
+                    } catch (err) {
+                        console.log(err);
+                    };
+                });
 
-                // logs the actual query being run
-                // console.log(query.sql); --I do not need this now
-                //-----------------------------------
-            })
-    }
+
+        } catch (err) {
+            console.log(err);
+        };
+    };
 
 
 };

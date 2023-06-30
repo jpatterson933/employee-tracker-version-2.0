@@ -173,33 +173,35 @@ class Employee {
         try {
 
             this.getEmployees();
-            inquirer.prompt([
-                {
-                    type: 'confirm',
-                    message: 'Are you sure you would like to edit an employee?',
-                    name: 'edit'
-                },
-                {
-                    type: 'list',
-                    message: 'Please choose an employee to edit',
-                    name: 'oldName',
-                    choices: this.employees,
-                },
-                {
-                    type: 'input',
-                    message: 'Enter New Employee First Name',
-                    name: 'firstName',
-                    validate: checkInput => checkInput ? true : (console.log('Please enter their first name!', false))
-                },
-                {
-                    type: 'input',
-                    message: 'Enter New Employee Last Name',
-                    name: 'lastName',
-                    validate: checkInput => checkInput ? true : (console.log('Please enter their last name!'), false)
-                }
-                //need to add a prompt that allows you to change the users role
-            ])
+            inquirer
+                .prompt([
+                    {
+                        type: 'confirm',
+                        message: 'Are you sure you would like to edit an employee?',
+                        name: 'edit'
+                    },
+                    {
+                        type: 'list',
+                        message: 'Please choose an employee to edit',
+                        name: 'oldName',
+                        choices: this.employees,
+                    },
+                    {
+                        type: 'input',
+                        message: 'Enter New Employee First Name',
+                        name: 'firstName',
+                        validate: checkInput => checkInput ? true : (console.log('Please enter their first name!', false))
+                    },
+                    {
+                        type: 'input',
+                        message: 'Enter New Employee Last Name',
+                        name: 'lastName',
+                        validate: checkInput => checkInput ? true : (console.log('Please enter their last name!'), false)
+                    }
+                    //need to add a prompt that allows you to change the users role
+                ])
                 .then(({ oldName, firstName, lastName }) => {
+                    console.log(oldName, firstName, lastName, "names here")
                     //---------------------------------
                     const query = 'UPDATE employee SET ? WHERE ?';
                     console.log('Updating Employee Name...\n');
