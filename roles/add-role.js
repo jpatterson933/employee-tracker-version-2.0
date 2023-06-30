@@ -17,78 +17,65 @@ const viewDept = async () => {
 };
 viewDept();
 const addRole = () => {
-    
-    //tells us which department choices we have
-    console.log(departmentId)
-    console.log(deptDisplay)
-    
-    inquirer.prompt ([
-        {
-            type: 'input',
-            message: 'Please enter a Role Title',
-            name: 'title',
-            validate: checkInput => {
-                if (checkInput) {
-                    return true;
-                } else {
-                    console.log(`Please enter a role title!`)
-                    return false;
-                }
-            }
-        },
-        {
-            type: 'number',
-            message: 'Enter Salary',
-            name: 'salary',
-            validate: checkInput => {
-                if (checkInput) {
-                    return true;
-                } else {
-                    console.log(`Please enter a valid role title!`)
-                    return false;
-                }
-            }
-        },
-        {
-            type: 'list',
-            message: `Department Info -- ${deptDisplay} --`,
-            name: 'department',
-            choices: departmentId
-        }
-    ])
-    .then(role => {
-        console.log('Inserting a new role...\n');
-
-        const insert = 'INSERT INTO role SET ?'
-
-        connection.query(insert, 
+    try {
+        inquirer.prompt([
             {
-                title: `${role.title}`,
-                salary: `${role.salary}`,
-                department_id: `${role.department}`
+                type: 'input',
+                message: 'Please enter a Role Title',
+                name: 'title',
+                validate: checkInput => checkInput ? true : (console.log('Please enter a role title'), false)
             },
-                (err, res) => {
-
-                if (err) throw err;
-
-                console.log(`${res.affectedRows} new role!\n`);
-                inquirer.prompt ([
-                    {
-                        type: 'confirm',
-                        message: 'Would you like to add another role?',
-                        name: 'add'
-                    }
-                ])
-                .then (choice => {
-                    if (!choice.add) {
-                        connection.end()
-                        console.log('Type node server and press ENTER for main menu')
-                    } else if (choice.add) {
-                        addRole()
-                    }
-                })
-            })
-    })
-}
+            {
+                type: 'number',
+                message: 'Enter Salary',
+                name: 'salary',
+                validate: checkInput => checkInput ? true : (console.log('Please enter a valid role title!'), false)
+            },
+            {
+                type: 'list',
+                message: `Department Info -- ${deptDisplay} --`,
+                name: 'department',
+                choices: departmentId
+            }
+        ])
+            .then(({ title, salary, department }) => {
+                try {
+                    console.log('Inserting a new role...\n');
+                    const query = 'INSERT INTO role SET ?';
+                    connection.query(query,
+                        {
+                            title: `${title}`,
+                            salary: `${salary}`,
+                            department_id: `${department}`
+                        },
+                        (err, res) => {
+                            try {
+                                console.log(`${res.affectedRows} new role!\n`);
+                                inquirer.prompt([
+                                    {
+                                        type: 'confirm',
+                                        message: 'Would you like to add another role?',
+                                        name: 'add'
+                                    }
+                                ])
+                                    .then(({ add }) => {
+                                        if (!add) {
+                                            this.menu();
+                                        } else if (add) {
+                                            addRole();
+                                        };
+                                    });
+                            } catch (err) {
+                                console.log(err);
+                            };
+                        });
+                } catch (err) {
+                    console.log(err);
+                };
+            });
+    } catch (err) {
+        console.log(err);
+    };
+};
 
 module.exports = addRole

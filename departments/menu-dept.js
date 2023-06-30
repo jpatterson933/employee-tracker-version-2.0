@@ -53,11 +53,12 @@ class Department {
         };
     };
 
-    async getDepartments() {
+    getDepartments() {
         try {
             const query = 'SELECT * FROM department';
             connection.query(query, (err, res) => {
                 try {
+                    this.departments.splice(0, this.departments.length); // empty the array
                     res.forEach(({ department_name }) => {
                         this.departments.push(department_name);
                     })
