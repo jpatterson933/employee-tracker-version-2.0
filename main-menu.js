@@ -3,11 +3,13 @@ const connection = require('./config/connection');
 const departmentsMenu = require('./departments/menu-dept');
 const rolesMenu = require('./roles/menu-roles');
 const Employee = require('./employees/menu-emp');
+const Department = require('./departments/menu-dept');
 
 const empMenuChoices = ['View Employees', 'Add Employee', 'Edit Employee', 'Delete Employee', 'Exit'];
 
 // const empMenuFunctions = [viewEmployees(), addEmployee(), editEmployee(), deleteEmployee()]
 const employee = new Employee();
+const department = new Department();
 const mainMenu = async () => {
     try {
 
@@ -24,7 +26,8 @@ const mainMenu = async () => {
         switch (menu) {
             case 'Departments':
                 console.log('You choose departments')
-                departmentsMenu();
+                // departmentsMenu();
+                department.menu();
                 break;
             case 'Employee Roles':
                 console.log('You choose employee roles')

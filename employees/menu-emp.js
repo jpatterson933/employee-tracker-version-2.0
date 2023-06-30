@@ -14,14 +14,15 @@ class Employee {
     };
 
     menu() {
-        inquirer.prompt([
-            {
-                type: 'list',
-                message: 'Employees Menu',
-                name: 'response',
-                choices: ['View Employees', 'Add Employee', 'Edit Employee', 'Delete Employee', 'Exit']
-            }
-        ])
+        inquirer
+            .prompt([
+                {
+                    type: 'list',
+                    message: 'Employees Menu',
+                    name: 'response',
+                    choices: ['View Employees', 'Add Employee', 'Edit Employee', 'Delete Employee', 'Exit']
+                }
+            ])
             .then(({ response }) => {
                 switch (response) {
                     case 'View Employees':
@@ -77,6 +78,23 @@ class Employee {
             };
         });
 
+    };
+
+    async view() {
+        const query = 'SELECT * FROM employee';
+        connection.query(query, (err, res) => {
+            try {
+
+                //deconstruct
+                res.forEach(({ employee_id, first_name, last_name, role_id }) => {
+                    console.log(`Employee ID : ${employee_id} | Employee Name : ${first_name} ${last_name} | Role ID : ${role_id}`);
+                });
+                console.log('-----------------------------------');
+                this.menu();
+            } catch (err) {
+                console.log(err);
+            };
+        });
     };
 
     async add() {
@@ -149,22 +167,7 @@ class Employee {
 
     };
 
-    async view() {
-        const query = 'SELECT * FROM employee';
-        connection.query(query, (err, res) => {
-            try {
 
-                //deconstruct
-                res.forEach(({ employee_id, first_name, last_name, role_id }) => {
-                    console.log(`Employee ID : ${employee_id} | Employee Name : ${first_name} ${last_name} | Role ID : ${role_id}`);
-                });
-                console.log('-----------------------------------');
-                this.menu();
-            } catch (err) {
-                console.log(err);
-            };
-        });
-    };
 
     async edit() {
         try {
