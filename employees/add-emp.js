@@ -17,8 +17,8 @@ const viewRole = async () => {
 viewRole();
 
 const addEmployee = () => {
-console.log(roleDisplay)
-    inquirer.prompt ([
+    console.log(roleDisplay)
+    inquirer.prompt([
         {
             type: 'input',
             message: "Enter employee's first name",
@@ -53,41 +53,41 @@ console.log(roleDisplay)
         }
         //i need to add a role chain here as well as an manager boolean yes or no choice option
     ])
-    .then(emp => {
-        console.log('Inserting a new employee...\n');
+        .then(emp => {
+            console.log('Inserting a new employee...\n');
 
-        const insert = 'INSERT INTO employee SET ?'
+            const insert = 'INSERT INTO employee SET ?'
 
-        connection.query(insert, 
-            {
-                first_name: `${emp.firstName}`,
-                last_name: `${emp.lastName}`,
-                role_id: `${emp.roleId}`
-                //manager boolean?
-            },
+            connection.query(insert,
+                {
+                    first_name: `${emp.firstName}`,
+                    last_name: `${emp.lastName}`,
+                    role_id: `${emp.roleId}`
+                    //manager boolean?
+                },
                 (err, res) => {
 
-                if (err) throw err;
+                    if (err) throw err;
 
-                console.log(`${res.affectedRows} new employee!\n`);
-                inquirer.prompt ([
-                    {
-                        type: 'confirm',
-                        message: 'Would you like to add another employee?',
-                        name: 'add'
-                    }
-                ])
-                .then(choice => {
-                    if (!choice.add) {
-                        connection.end()
-                        console.log('Type node server and press ENTER for main menu!')
-                    } else if (choice.add) {
-                        addEmployee();
-                        return;
-                    }
+                    console.log(`${res.affectedRows} new employee!\n`);
+                    inquirer.prompt([
+                        {
+                            type: 'confirm',
+                            message: 'Would you like to add another employee?',
+                            name: 'add'
+                        }
+                    ])
+                        .then(choice => {
+                            if (!choice.add) {
+                                connection.end()
+                                console.log('Type node server and press ENTER for main menu!')
+                            } else if (choice.add) {
+                                addEmployee();
+                                return;
+                            }
+                        })
                 })
-            })
-    })
+        })
 }
 
 module.exports = addEmployee

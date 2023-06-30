@@ -2,20 +2,30 @@ const inquirer = require('inquirer');
 const connection = require('./config/connection');
 const departmentsMenu = require('./departments/menu-dept')
 const rolesMenu = require('./roles/menu-roles')
-const employeeMenu = require('./employees/menu-emp')
+const Employee = require('./employees/menu-emp')
+const viewEmployees = require('./employees/view-emp')
+const addEmployee = require('./employees/add-emp')
+const editEmployee = require('./employees/edit-emp')
+const deleteEmployee = require('./employees/del-emp')
 
+const empMenuChoices = ['View Employees', 'Add Employee', 'Edit Employee', 'Delete Employee', 'Exit'];
 
+// const empMenuFunctions = [viewEmployees(), addEmployee(), editEmployee(), deleteEmployee()]
+const employee = new Employee();
 const mainMenu = async () => {
-    inquirer.prompt ([
-        {
-            type: 'list',
-            message: 'Main Menu',
-            name: 'menu',
-            choices: ['Departments', 'Employee Roles', 'Employees', 'Exit']
-        }
-    ])
-    .then (menuChoice => {
-        switch (menuChoice.menu) {
+    try {
+
+
+        const { menu } = await inquirer.prompt([
+            {
+                type: 'list',
+                message: 'Main Menu',
+                name: 'menu',
+                choices: ['Departments', 'Employee Roles', 'Employees', 'Exit']
+            }
+        ]);
+
+        switch (menu) {
             case 'Departments':
                 console.log('You choose departments')
                 departmentsMenu();
@@ -26,7 +36,9 @@ const mainMenu = async () => {
                 break;
             case 'Employees':
                 console.log('You have chosen Employees')
-                employeeMenu();
+                // employeeMenu('Employees Menu', empMenuChoices);
+                // employee.getRoles();
+                employee.menu();
                 break;
             case 'Exit':
                 console.log('Goodbye! Type node server to restart the Employee Management System!')
@@ -36,7 +48,9 @@ const mainMenu = async () => {
                 connection.end();
                 break;
         }
-    })
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 
