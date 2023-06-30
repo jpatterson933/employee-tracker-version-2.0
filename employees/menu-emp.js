@@ -11,6 +11,7 @@ class Employee {
 
         this.roleId = [];
         this.roleDisplay = [];
+        this.employees = [];
 
     }
 
@@ -38,7 +39,8 @@ class Employee {
                         break;
                     case 'Edit Employee':
                         console.log('You have chosen to edit an employee')
-                        editEmployee()
+                        // editEmployee()
+                        this.edit();
                         break;
                     case 'Delete Employee':
                         console.log('You have chosen to fire someone')
@@ -67,6 +69,20 @@ class Employee {
                 console.log(err);
             }
         });
+    }
+
+    async getEmployees() {
+        const query = 'SELECT * FROM employee';
+        connection.query(query, (err, res) => {
+            try {
+                res.forEach(({ first_name }) => {
+                    this.employees.push(first_name);
+                })
+            } catch (err) {
+                console.log(err);
+            }
+        })
+
     }
 
     async add() {
@@ -139,8 +155,8 @@ class Employee {
     }
 
     async view() {
-        connection.query('SELECT * FROM employee', (err, res) => {
-            if (err) throw err;
+        const query = 'SELECT * FROM employee';
+        connection.query(query, (err, res) => {
             try {
 
                 //deconstruct
@@ -156,6 +172,69 @@ class Employee {
             }
         });
     }
+
+    async edit() {
+        try {
+
+            await this.getEmployees();
+            inquirer.prompt([
+                {
+                    type: 'confirm',
+                    message: 'Are you sure you would like to edit an employee?',
+                    name: 'edit'
+                },
+                {
+                    type: 'list',
+                    message: 'Please choose an employee to edit',
+                    name: 'oldName',
+                    choices: this.employees,
+                    // validate: checkInput => checkInput ? true : (console.log('Please enter an employee name!', false))
+                },
+                {
+                    type: 'input',
+                    message: 'Enter New Employee First Name',
+                    name: 'firstName',
+                    validate: checkInput => checkInput ? true : (console.log('Please enter their first name!', false))
+                },
+                {
+                    type: 'input',
+                    message: 'Enter New Employee Last Name',
+                    name: 'lastName',
+                    validate: checkInput => checkInput ? true : (console.log('Please enter their last name!'), false)
+                }
+                //need to add a prompt that allows you to change the users role
+            ])
+                .then(({oldName, firstName, lastName}) => {
+                    //---------------------------------
+                    const query = 'UPDATE employee SET ? WHERE ?';
+                    console.log('Updating Employee Name...\n');
+                    connection.query(query,
+                        [
+                            {
+                                first_name: `${firstName}`,
+                                last_name: `${lastName}`
+                            },
+                            {
+                                first_name: `${oldName}`
+                            }
+                        ],
+                        (err, res) => {
+                            if (err) throw err;
+                            console.log(`${res.affectedRows} employees updated!\n`);
+                            //do i need to call my delete function?
+                            console.log('Type node server and press ENTER for Main Menu')
+                            // connection.end();
+                            this.menu();
+                        }
+                    );
+
+                })
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+
 
 }
 
