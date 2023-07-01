@@ -202,7 +202,6 @@ class Department extends Main {
 
     delete() {
         try {
-
             inquirer
                 .prompt([
                     {
@@ -268,8 +267,6 @@ class Department extends Main {
                         console.log(err);
                     };
                 });
-
-
         } catch (err) {
             console.log(err);
         };
