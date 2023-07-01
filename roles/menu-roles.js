@@ -224,36 +224,52 @@ class Role extends Main {
                         message: 'Are you sure you want to remove role?',
                         name: 'delete'
                     },
-                    {
-                        type: 'list',
-                        message: 'Please choose a role to delete',
-                        name: 'role',
-                        choices: this.roles
-                    }
                 ])
-                .then(({ role }) => {
+                .then(({ remove }) => {
                     try {
-                        console.log('Deleting role...\n');
-                        const query = 'DELETE FROM role WHERE ?';
-                        connection.query(query,
-                            {
-                                title: `${role}`,
-                            },
-                            (err, res) => {
-                                console.log(res)
-                                if (err) console.log(err);
-                                try {
-                                    console.log(`${res.affectedRows} roles deleted!\n`);
-                                    this.menu();
-                                } catch (err) {
-                                    console.log(err);
-                                };
-                            }
-                        );
+                        if (!remove) {
+                            this.menu();
+                            return;
+                        } else if (remove) {
+                            inquirer
+                                .prompt([
+                                    {
+                                        type: 'list',
+                                        message: 'Please choose a role to delete',
+                                        name: 'role',
+                                        choices: this.roles
+                                    }
+                                ])
+                                .then(({ role }) => {
+                                    try {
+                                        console.log('Deleting role...\n');
+                                        const query = 'DELETE FROM role WHERE ?';
+                                        connection.query(query,
+                                            {
+                                                title: `${role}`,
+                                            },
+                                            (err, res) => {
+                                                console.log(res)
+                                                if (err) console.log(err);
+                                                try {
+                                                    console.log(`${res.affectedRows} roles deleted!\n`);
+                                                    this.menu();
+                                                } catch (err) {
+                                                    console.log(err);
+                                                };
+                                            }
+                                        );
+                                    } catch (err) {
+                                        console.log(err);
+                                    };
+                                });
+                        }
                     } catch (err) {
                         console.log(err);
                     };
                 });
+
+
         } catch (err) {
             console.log(err);
         };
