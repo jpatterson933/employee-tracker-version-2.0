@@ -28,4 +28,8 @@ CREATE TABLE employee (
     PRIMARY KEY (employee_id),
     role_id INT,
     manager_id INT
+    CONSTRAINT role -- FOREIGN KEY that says if a role is delete all associated employees are too
+        FOREIGN KEY (role_id)
+        REFERENCES role (role_id)
+        ON DELETE CASCADE
 );
