@@ -141,9 +141,9 @@ class Department extends Main {
                     },
                     {
                         type: 'list',
-                        message: 'Please Select a department to edit',
+                        message: this.departments,
                         name: 'oldName',
-                        choices: this.departments,
+                        choices: this.departmentId,
                     },
                     {
                         type: 'input',
@@ -184,6 +184,7 @@ class Department extends Main {
     };
 
     delete() {
+        const message = `Please choose a department by id: ${this.departments}`
         try {
             inquirer
                 .prompt([
@@ -194,7 +195,7 @@ class Department extends Main {
                     },
                     {
                         type: 'list',
-                        message: 'Please choose a department to delete',
+                        message: message,
                         name: 'department',
                         choices: this.departments
                     }

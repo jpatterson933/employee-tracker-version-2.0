@@ -20,7 +20,7 @@ class Main {
 
                     res.forEach(({ role_id, title }) => {
                         this.roleId.push(role_id);
-                        this.roleName.push(`-- ${title}: ${role_id} --`);
+                        this.roleName.push(`${title}: ${role_id} --`);
                     });
 
                 } catch (err) {

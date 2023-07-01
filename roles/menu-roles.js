@@ -53,43 +53,6 @@ class Role extends Main {
         };
     };
 
-    // getDepartments() {
-    //     try {
-    //         const query = 'SELECT * FROM department';
-    //         connection.query(query, (err, res) => {
-    //             try {
-    //                 this.departments.splice(0, this.departments.length); // empty the array
-    //                 res.forEach(({ department_name }) => {
-    //                     this.departments.push(department_name);
-    //                 })
-    //             } catch (err) {
-    //                 console.log(err);
-    //             };
-    //         });
-    //     } catch (err) {
-    //         console.log(err);
-    //     };
-    // };
-
-    // getRoles() {
-    //     try {
-    //         const query = 'SELECT * FROM role';
-    //         connection.query(query, (err, res) => {
-    //             try {
-    //                 this.roles.splice(0, this.roles.length);
-    //                 res.forEach(({ title }) => {
-    //                     this.roles.push(title);
-    //                 });
-
-    //             } catch (err) {
-    //                 console.log(err);
-    //             };
-    //         });
-    //     } catch (err) {
-    //         console.log(err);
-    //     };
-    // };
-
     view() {
         try {
             connection.query('SELECT * FROM role', (err, res) => {
