@@ -222,7 +222,7 @@ class Role extends Main {
                     {
                         type: 'confirm',
                         message: 'Are you sure you want to remove role?',
-                        name: 'delete'
+                        name: 'remove'
                     },
                 ])
                 .then(({ remove }) => {
@@ -231,39 +231,43 @@ class Role extends Main {
                             this.menu();
                             return;
                         } else if (remove) {
-                            inquirer
-                                .prompt([
-                                    {
-                                        type: 'list',
-                                        message: 'Please choose a role to delete',
-                                        name: 'role',
-                                        choices: this.roles
-                                    }
-                                ])
-                                .then(({ role }) => {
-                                    try {
-                                        console.log('Deleting role...\n');
-                                        const query = 'DELETE FROM role WHERE ?';
-                                        connection.query(query,
-                                            {
-                                                title: `${role}`,
-                                            },
-                                            (err, res) => {
-                                                console.log(res)
-                                                if (err) console.log(err);
-                                                try {
-                                                    console.log(`${res.affectedRows} roles deleted!\n`);
-                                                    this.menu();
-                                                } catch (err) {
-                                                    console.log(err);
-                                                };
-                                            }
-                                        );
-                                    } catch (err) {
-                                        console.log(err);
-                                    };
-                                });
-                        }
+                            try {
+                                inquirer
+                                    .prompt([
+                                        {
+                                            type: 'list',
+                                            message: this.roleName,
+                                            name: 'role',
+                                            choices: this.roleId
+                                        }
+                                    ])
+                                    .then(({ role }) => {
+                                        try {
+                                            console.log('Deleting role...\n');
+                                            const query = 'DELETE FROM role WHERE ?';
+                                            connection.query(query,
+                                                {
+                                                    role_id: `${role}`,
+                                                },
+                                                (err, res) => {
+                                                    console.log(res)
+                                                    if (err) console.log(err);
+                                                    try {
+                                                        console.log(`${res.affectedRows} roles deleted!\n`);
+                                                        this.menu();
+                                                    } catch (err) {
+                                                        console.log(err);
+                                                    };
+                                                }
+                                            );
+                                        } catch (err) {
+                                            console.log(err);
+                                        };
+                                    });
+                            } catch (err) {
+                                console.log(err);
+                            };
+                        };
                     } catch (err) {
                         console.log(err);
                     };
