@@ -7,6 +7,7 @@ class Main {
         this.roleName = [];
         this.employees = [];
         this.departments = [];
+        this.departmentId = [];
     }
 
     getRoles() {
@@ -55,8 +56,10 @@ class Main {
             connection.query(query, (err, res) => {
                 try {
                     this.departments.splice(0, this.departments.length); // empty the array
-                    res.forEach(({ department_name }) => {
-                        this.departments.push(department_name);
+                    this.departmentId.splice(0, this.departmentId.length);
+                    res.forEach(({ department_name, department_id }) => {
+                        this.departmentId.push(department_id);
+                        this.departments.push(` -- ${department_name}: ${department_id} `);
                     })
                 } catch (err) {
                     console.log(err);

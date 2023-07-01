@@ -1,10 +1,9 @@
 const inquirer = require('inquirer');
 const connection = require('../config/connection');
-
-class Role {
+const Main = require('../models/Main');
+class Role extends Main {
     constructor() {
-        this.departments = [];
-        this.roles = [];
+        super();
     };
 
     menu() {
@@ -27,17 +26,17 @@ class Role {
                                 break;
                             case 'Add Role':
                                 console.log('You have chosen to add a role');
-                                this.getDepartments();
+                                super.getDepartments();
                                 this.add();
                                 break;
                             case 'Edit Role':
                                 console.log('You have chosen to edit role');
-                                this.getRoles();
+                                super.getRoles();
                                 this.edit();
                                 break;
                             case 'Delete Role':
                                 console.log('You have chosen to delete a role');
-                                this.getRoles();
+                                super.getRoles();
                                 this.delete();
                                 break;
                             case 'Exit':
@@ -54,42 +53,42 @@ class Role {
         };
     };
 
-    getDepartments() {
-        try {
-            const query = 'SELECT * FROM department';
-            connection.query(query, (err, res) => {
-                try {
-                    this.departments.splice(0, this.departments.length); // empty the array
-                    res.forEach(({ department_name }) => {
-                        this.departments.push(department_name);
-                    })
-                } catch (err) {
-                    console.log(err);
-                };
-            });
-        } catch (err) {
-            console.log(err);
-        };
-    };
+    // getDepartments() {
+    //     try {
+    //         const query = 'SELECT * FROM department';
+    //         connection.query(query, (err, res) => {
+    //             try {
+    //                 this.departments.splice(0, this.departments.length); // empty the array
+    //                 res.forEach(({ department_name }) => {
+    //                     this.departments.push(department_name);
+    //                 })
+    //             } catch (err) {
+    //                 console.log(err);
+    //             };
+    //         });
+    //     } catch (err) {
+    //         console.log(err);
+    //     };
+    // };
 
-    getRoles() {
-        try {
-            const query = 'SELECT * FROM role';
-            connection.query(query, (err, res) => {
-                try {
-                    this.roles.splice(0, this.roles.length);
-                    res.forEach(({ title }) => {
-                        this.roles.push(title);
-                    });
+    // getRoles() {
+    //     try {
+    //         const query = 'SELECT * FROM role';
+    //         connection.query(query, (err, res) => {
+    //             try {
+    //                 this.roles.splice(0, this.roles.length);
+    //                 res.forEach(({ title }) => {
+    //                     this.roles.push(title);
+    //                 });
 
-                } catch (err) {
-                    console.log(err);
-                };
-            });
-        } catch (err) {
-            console.log(err);
-        };
-    };
+    //             } catch (err) {
+    //                 console.log(err);
+    //             };
+    //         });
+    //     } catch (err) {
+    //         console.log(err);
+    //     };
+    // };
 
     view() {
         try {
@@ -129,9 +128,9 @@ class Role {
                         },
                         {
                             type: 'list',
-                            message: 'Please choose a department',
+                            message: this.departments,
                             name: 'department',
-                            choices: this.departments
+                            choices: this.departmentId
                         }
                     ])
                     .then(({ title, salary, department }) => {
@@ -145,6 +144,7 @@ class Role {
                                     department_id: `${department}`
                                 },
                                 (err, res) => {
+                                    if(err) console.log(err);
                                     try {
                                         console.log(`${res.affectedRows} new role!\n`);
                                         inquirer
