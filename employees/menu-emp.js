@@ -149,52 +149,63 @@ class Employee extends Main {
                         message: 'Are you sure you would like to edit an employee?',
                         name: 'edit'
                     },
-                    {
-                        type: 'list',
-                        message: 'Please choose an employee to edit',
-                        name: 'oldName',
-                        choices: this.employees,
-                    },
-                    {
-                        type: 'input',
-                        message: 'Enter New Employee First Name',
-                        name: 'firstName',
-                        validate: checkInput => checkInput ? true : (console.log('Please enter their first name!', false))
-                    },
-                    {
-                        type: 'input',
-                        message: 'Enter New Employee Last Name',
-                        name: 'lastName',
-                        validate: checkInput => checkInput ? true : (console.log('Please enter their last name!'), false)
-                    }
-                    //need to add a prompt that allows you to change the users role
                 ])
-                .then(({ oldName, firstName, lastName }) => {
-                    try {
-                        const query = 'UPDATE employee SET ? WHERE ?';
-                        console.log('Updating Employee Name...\n');
-                        connection.query(query,
-                            [
+                .then(({ edit }) => {
+                    if (!edit) {
+                        this.menu();
+                        return;
+                    } else if (edit) {
+                        inquirer
+                            .prompt([
                                 {
-                                    first_name: `${firstName}`,
-                                    last_name: `${lastName}`
+                                    type: 'list',
+                                    message: 'Please choose an employee to edit',
+                                    name: 'oldName',
+                                    choices: this.employees,
                                 },
                                 {
-                                    first_name: `${oldName}`
+                                    type: 'input',
+                                    message: 'Enter New Employee First Name',
+                                    name: 'firstName',
+                                    validate: checkInput => checkInput ? true : (console.log('Please enter their first name!', false))
+                                },
+                                {
+                                    type: 'input',
+                                    message: 'Enter New Employee Last Name',
+                                    name: 'lastName',
+                                    validate: checkInput => checkInput ? true : (console.log('Please enter their last name!'), false)
                                 }
-                            ],
-                            (err, res) => {
+
+                            ])
+                            //need to add a prompt that allows you to change the users role
+                            .then(({ oldName, firstName, lastName }) => {
                                 try {
-                                    console.log(`${res.affectedRows} employees updated!\n`);
-                                    console.log('Type node server and press ENTER for Main Menu');
-                                    this.menu();
+                                    const query = 'UPDATE employee SET ? WHERE ?';
+                                    console.log('Updating Employee Name...\n');
+                                    connection.query(query,
+                                        [
+                                            {
+                                                first_name: `${firstName}`,
+                                                last_name: `${lastName}`
+                                            },
+                                            {
+                                                first_name: `${oldName}`
+                                            }
+                                        ],
+                                        (err, res) => {
+                                            try {
+                                                console.log(`${res.affectedRows} employees updated!\n`);
+                                                console.log('Type node server and press ENTER for Main Menu');
+                                                this.menu();
+                                            } catch (err) {
+                                                console.log(err);
+                                            };
+                                        }
+                                    );
                                 } catch (err) {
                                     console.log(err);
                                 };
-                            }
-                        );
-                    } catch (err) {
-                        console.log(err);
+                            });
                     };
                 });
         } catch (err) {

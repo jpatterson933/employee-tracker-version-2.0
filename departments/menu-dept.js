@@ -141,7 +141,6 @@ class Department extends Main {
                     },
                 ])
                 .then(({ edit }) => {
-                    console.log(edit)
                     if (!edit) {
                         this.menu();
                         return;
