@@ -220,34 +220,48 @@ class Employee extends Main {
                     {
                         type: 'confirm',
                         message: 'Are you sure you want to remove an employee?',
-                        name: 'delete'
+                        name: 'remove'
                     },
-                    {
-                        type: 'list',
-                        message: 'Choose an employee to delete',
-                        name: 'emp',
-                        choices: this.employees
-                    }
                 ])
-                .then(({ emp }) => {
-                    try {
-                        console.log('Deleting employee...\n');
-                        const query = 'DELETE FROM employee WHERE ?';
-                        connection.query(query,
-                            {
-                                first_name: `${emp}`,
-                            },
-                            (err, res) => {
-                                try {
-                                    console.log(`${res.affectedRows} employee deleted!\n`);
-                                    this.menu();
-                                } catch (err) {
-                                    console.log(err);
-                                };
-                            }
-                        );
-                    } catch (err) {
-                        console.log(err);
+                .then(({ remove }) => {
+                    if (!remove) {
+                        this.menu();
+                        return;
+                    } else if (remove) {
+                        try {
+                            inquirer
+                                .prompt([
+                                    {
+                                        type: 'list',
+                                        message: 'Choose an employee to delete',
+                                        name: 'emp',
+                                        choices: this.employees
+                                    }
+                                ])
+                                .then(({ emp }) => {
+                                    try {
+                                        console.log('Deleting employee...\n');
+                                        const query = 'DELETE FROM employee WHERE ?';
+                                        connection.query(query,
+                                            {
+                                                first_name: `${emp}`,
+                                            },
+                                            (err, res) => {
+                                                try {
+                                                    console.log(`${res.affectedRows} employee deleted!\n`);
+                                                    this.menu();
+                                                } catch (err) {
+                                                    console.log(err);
+                                                };
+                                            }
+                                        );
+                                    } catch (err) {
+                                        console.log(err);
+                                    };
+                                });
+                        } catch (err) {
+                            console.log(err);
+                        };
                     };
                 });
         } catch (err) {
