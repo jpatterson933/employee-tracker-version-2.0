@@ -17,7 +17,7 @@ class Department extends Main {
                         choices: ['View Departments', 'Add Departments', 'Edit Departments', 'Delete Departments', 'Exit']
                     }
                 ])
-                .then(({menuChoice}) => {
+                .then(({ menuChoice }) => {
                     try {
 
                         switch (menuChoice) {
@@ -31,12 +31,11 @@ class Department extends Main {
                                 break;
                             case 'Edit Departments':
                                 console.log('You chose to edit the departments')
-                                super.getDepartments();
                                 this.edit();
                                 break;
                             case 'Delete Departments':
                                 console.log('You are eleminating an entire Department')
-                                super.getDepartments
+                                super.getDepartments();
                                 this.delete();
                                 break;
                             case 'Exit':
@@ -132,6 +131,7 @@ class Department extends Main {
 
     edit() {
         try {
+            super.getDepartments(); // refresh departments tab
             inquirer
                 .prompt([
                     {
@@ -139,53 +139,71 @@ class Department extends Main {
                         message: 'Are you sure you want to edit the departments?',
                         name: 'edit'
                     },
-                    {
-                        type: 'list',
-                        message: this.departments,
-                        name: 'oldName',
-                        choices: this.departmentId,
-                    },
-                    {
-                        type: 'input',
-                        message: 'Enter new department name',
-                        name: 'newName',
-                        validate: checkInput => checkInput ? true : (console.log("Please enter a department name!"), false)
-                    }
                 ])
-                .then(({ oldName, newName }) => {
-                    try {
-                        const query = 'UPDATE department SET ? WHERE ?';
-                        console.log('Updating Department Name...\n');
-                        connection.query(query,
-                            [
-                                {
-                                    department_name: `${newName}`,
-                                },
-                                {
-                                    department_name: `${oldName}`
-                                }
-                            ],
-                            (err, res) => {
-                                try {
-                                    console.log(`${res.affectedRows} department updated!\n`);
-                                    this.menu();
-                                } catch (err) {
-                                    console.log(err);
-                                };
-                            }
-                        );
-                    } catch (err) {
-                        console.log(err);
+                .then(({ edit }) => {
+                    console.log(edit)
+                    if (!edit) {
+                        this.menu();
+                        return;
+                    } else if (edit) {
+                        try {
+
+                            inquirer
+                                .prompt([
+
+                                    {
+                                        type: 'list',
+                                        message: this.departments,
+                                        name: 'id',
+                                        choices: this.departmentId,
+                                    },
+                                    {
+                                        type: 'input',
+                                        message: 'Enter new department name',
+                                        name: 'newName',
+                                        validate: checkInput => checkInput ? true : (console.log("Please enter a department name!"), false)
+                                    }
+                                ])
+                                .then(({ id, newName }) => {
+                                    try {
+                                        const query = 'UPDATE department SET ? WHERE ?';
+                                        console.log('Updating Department Name...\n');
+                                        connection.query(query,
+                                            [
+                                                {
+                                                    department_name: `${newName}`,
+                                                },
+                                                {
+                                                    department_id: `${id}`
+                                                }
+                                            ],
+                                            (err, res) => {
+                                                try {
+                                                    console.log(`${res.affectedRows} department updated!\n`);
+                                                    this.menu();
+                                                } catch (err) {
+                                                    console.log(err);
+                                                };
+                                            }
+                                        );
+                                    } catch (err) {
+                                        console.log(err);
+                                    };
+                                });
+                        } catch (err) {
+                            console.error(err);
+                        };
                     };
                 });
+
         } catch (err) {
             console.log(err);
         };
     };
 
     delete() {
-        const message = `Please choose a department by id: ${this.departments}`
         try {
+
             inquirer
                 .prompt([
                     {
@@ -195,9 +213,9 @@ class Department extends Main {
                     },
                     {
                         type: 'list',
-                        message: message,
+                        message: this.departments,
                         name: 'department',
-                        choices: this.departments
+                        choices: this.departmentId
                     }
                 ])
                 .then(({ department }) => {
@@ -207,7 +225,7 @@ class Department extends Main {
                         console.log('Deleting department...\n');
                         connection.query(query,
                             {
-                                department_name: `${department}`,
+                                department_id: `${department}`,
                             },
                             (err, res) => {
                                 try {
@@ -222,20 +240,10 @@ class Department extends Main {
                                         ])
                                         .then(({ del }) => {
                                             try {
-                                                if (!del) {
-                                                    // connection.end()
-                                                    this.menu();
-                                                    // console.log('Type node server and press ENTER for main menu!')
-                                                } else if (del) {
-                                                    //note when the user deletes a department and wnats to delete another one
-                                                    //it will not remove the department from the display when the funciton is rerun
-                                                    // deleteDepartment();
-                                                    this.delete();
-                                                    return;
-                                                }
+                                                return (!del) ? (this.menu()) : (this.delete());
                                             } catch (err) {
-                                                console.log(err);
-                                            };
+                                                console.error(err);
+                                            }
                                         });
                                 } catch (err) {
                                     console.log(err);
