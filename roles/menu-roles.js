@@ -107,7 +107,7 @@ class Role extends Main {
                                     department_id: `${department}`
                                 },
                                 (err, res) => {
-                                    if(err) console.log(err);
+                                    if (err) console.log(err);
                                     try {
                                         console.log(`${res.affectedRows} new role!\n`);
                                         inquirer
@@ -149,54 +149,67 @@ class Role extends Main {
                         type: 'confirm',
                         message: 'Are you sure you want to edit a role?',
                         name: 'edit'
-                    },
-                    {
-                        type: 'list',
-                        message: 'Please enter a Role you would like to edit',
-                        name: 'oldTitle',
-                        choices: this.roles,
-                        validate: checkInput => checkInput ? true : (console.log('Please enter a role name!'), false)
-                    },
-                    {
-                        type: 'input',
-                        message: 'Enter new role title',
-                        name: 'newTitle',
-                        validate: checkInput => checkInput ? true : (console.log('Please enter a department name!'), false)
-                    },
-                    {
-                        type: 'number',
-                        message: 'Enter new salary',
-                        name: 'newSal',
-                        validate: checkInput => checkInput ? true : (console.log('Please enter a role salary!'), false)
                     }
                 ])
-                .then(({ oldTitle, newTitle, newSal }) => {
-                    try {
-                        console.log('Updating Role Name...\n');
-                        const query = 'UPDATE role SET ? WHERE ?';
-                        connection.query(query,
-                            [
+                .then(({ edit }) => {
+
+                    if (!edit) {
+                        this.menu();
+                        return;
+                    } else if (edit) {
+                        inquirer
+                            .prompt([
                                 {
-                                    title: `${newTitle}`,
-                                    salary: `${newSal}`
+                                    type: 'list',
+                                    message: 'Please enter a Role you would like to edit',
+                                    name: 'oldTitle',
+                                    choices: this.roles,
+                                    validate: checkInput => checkInput ? true : (console.log('Please enter a role name!'), false)
                                 },
                                 {
-                                    title: `${oldTitle}`
+                                    type: 'input',
+                                    message: 'Enter new role title',
+                                    name: 'newTitle',
+                                    validate: checkInput => checkInput ? true : (console.log('Please enter a department name!'), false)
+                                },
+                                {
+                                    type: 'number',
+                                    message: 'Enter new salary',
+                                    name: 'newSal',
+                                    validate: checkInput => checkInput ? true : (console.log('Please enter a role salary!'), false)
                                 }
-                            ],
-                            (err, res) => {
+
+                            ])
+                            .then(({ oldTitle, newTitle, newSal }) => {
                                 try {
-                                    console.log(`${res.affectedRows} roles updated!\n`);
-                                    this.menu();
+                                    console.log('Updating Role Name...\n');
+                                    const query = 'UPDATE role SET ? WHERE ?';
+                                    connection.query(query,
+                                        [
+                                            {
+                                                title: `${newTitle}`,
+                                                salary: `${newSal}`
+                                            },
+                                            {
+                                                title: `${oldTitle}`
+                                            }
+                                        ],
+                                        (err, res) => {
+                                            try {
+                                                console.log(`${res.affectedRows} roles updated!\n`);
+                                                this.menu();
+                                            } catch (err) {
+                                                console.log(err);
+                                            };
+                                        }
+                                    );
                                 } catch (err) {
                                     console.log(err);
                                 };
-                            }
-                        );
-                    } catch (err) {
-                        console.log(err);
+                            });
                     };
                 });
+
         } catch (err) {
             console.log(err);
         };
@@ -228,7 +241,7 @@ class Role extends Main {
                             },
                             (err, res) => {
                                 console.log(res)
-                                if(err) console.log(err);
+                                if (err) console.log(err);
                                 try {
                                     console.log(`${res.affectedRows} roles deleted!\n`);
                                     this.menu();
