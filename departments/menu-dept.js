@@ -1,9 +1,9 @@
 const inquirer = require('inquirer');
 const connection = require('../config/connection');
-
-class Department {
+const Main = require('../models/Main');
+class Department extends Main {
     constructor() {
-        this.departments = []
+        super();
     }
 
     menu() {
@@ -31,12 +31,14 @@ class Department {
                                 break;
                             case 'Edit Departments':
                                 console.log('You chose to edit the departments')
-                                this.getDepartments();
+                                // this.getDepartments();
+                                super.getDepartments();
                                 this.edit();
                                 break;
                             case 'Delete Departments':
                                 console.log('You are eleminating an entire Department')
-                                this.getDepartments();
+                                // this.getDepartments();
+                                super.getDepartments
                                 this.delete();
                                 break;
                             case 'Exit':
@@ -48,24 +50,6 @@ class Department {
                         console.log(err);
                     }
                 });
-        } catch (err) {
-            console.log(err);
-        };
-    };
-
-    getDepartments() {
-        try {
-            const query = 'SELECT * FROM department';
-            connection.query(query, (err, res) => {
-                try {
-                    this.departments.splice(0, this.departments.length); // empty the array
-                    res.forEach(({ department_name }) => {
-                        this.departments.push(department_name);
-                    })
-                } catch (err) {
-                    console.log(err);
-                };
-            });
         } catch (err) {
             console.log(err);
         };
