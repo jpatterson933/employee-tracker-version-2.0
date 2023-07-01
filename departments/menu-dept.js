@@ -208,51 +208,68 @@ class Department extends Main {
                     {
                         type: 'confirm',
                         message: 'Are you sure you want to delete a department?',
-                        name: 'delete'
+                        name: 'remove'
                     },
-                    {
-                        type: 'list',
-                        message: this.departments,
-                        name: 'department',
-                        choices: this.departmentId
-                    }
                 ])
-                .then(({ department }) => {
+                .then(({ remove }) => {
                     try {
-                        const query = 'DELETE FROM department WHERE ?';
-                        //lets user know that the department is being deleted
-                        console.log('Deleting department...\n');
-                        connection.query(query,
-                            {
-                                department_id: `${department}`,
-                            },
-                            (err, res) => {
-                                try {
-                                    console.log(`${res.affectedRows} departments deleted!\n`);
-                                    inquirer
-                                        .prompt([
+                        if (!remove) {
+                            this.menu();
+                            return;
+                        } else if (remove) {
+                            inquirer
+                                .prompt([
+                                    {
+                                        type: 'list',
+                                        message: this.departments,
+                                        name: 'department',
+                                        choices: this.departmentId
+                                    }
+                                ])
+
+                                .then(({ department }) => {
+                                    try {
+                                        const query = 'DELETE FROM department WHERE ?';
+                                        //lets user know that the department is being deleted
+                                        console.log('Deleting department...\n');
+                                        connection.query(query,
                                             {
-                                                type: 'confirm',
-                                                message: 'Would you like to add another department?',
-                                                name: 'del'
+                                                department_id: `${department}`,
+                                            },
+                                            (err, res) => {
+                                                try {
+                                                    console.log(`${res.affectedRows} departments deleted!\n`);
+                                                    inquirer
+                                                        .prompt([
+                                                            {
+                                                                type: 'confirm',
+                                                                message: 'Would you like to add another department?',
+                                                                name: 'del'
+                                                            }
+                                                        ])
+                                                        .then(({ del }) => {
+                                                            try {
+                                                                return (!del) ? (this.menu()) : (this.delete());
+                                                            } catch (err) {
+                                                                console.error(err);
+                                                            };
+                                                        });
+                                                } catch (err) {
+                                                    console.log(err);
+                                                };
                                             }
-                                        ])
-                                        .then(({ del }) => {
-                                            try {
-                                                return (!del) ? (this.menu()) : (this.delete());
-                                            } catch (err) {
-                                                console.error(err);
-                                            }
-                                        });
-                                } catch (err) {
-                                    console.log(err);
-                                };
-                            }
-                        );
+                                        );
+                                    } catch (err) {
+                                        console.log(err);
+                                    };
+                                });
+                        };
                     } catch (err) {
                         console.log(err);
                     };
                 });
+
+
         } catch (err) {
             console.log(err);
         };
