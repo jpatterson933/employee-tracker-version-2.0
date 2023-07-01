@@ -31,13 +31,11 @@ class Department extends Main {
                                 break;
                             case 'Edit Departments':
                                 console.log('You chose to edit the departments')
-                                // this.getDepartments();
                                 super.getDepartments();
                                 this.edit();
                                 break;
                             case 'Delete Departments':
                                 console.log('You are eleminating an entire Department')
-                                // this.getDepartments();
                                 super.getDepartments
                                 this.delete();
                                 break;
@@ -58,16 +56,12 @@ class Department extends Main {
     view() {
         try {
             const query = 'SELECT * FROM department';
-
             connection.query(query, (err, res) => {
-                // if (err) throw err;
                 try {
-
                     res.forEach(({ department_id, department_name }) => {
                         console.table(`${department_id} | ${department_name}`);
                     });
                     console.log('-----------------------------------');
-                    // console.log('Type CTRL + C to exit!')
                     this.menu();
                 } catch (err) {
                     console.log(err);
@@ -114,9 +108,7 @@ class Department extends Main {
                                         .then(({ add }) => {
                                             try {
                                                 if (!add) {
-                                                    // connection.end()
                                                     this.menu();
-                                                    console.log('Type node server and press ENTER for main menu!');
                                                 } else if (add) {
                                                     this.add();
                                                     return;
@@ -152,7 +144,6 @@ class Department extends Main {
                         message: 'Please Select a department to edit',
                         name: 'oldName',
                         choices: this.departments,
-                        // validate: checkInput => checkInput ? true : (console.log('Please enter a department name!'), false)
                     },
                     {
                         type: 'input',
@@ -162,9 +153,7 @@ class Department extends Main {
                     }
                 ])
                 .then(({ oldName, newName }) => {
-                    //---------------------------------
                     try {
-                        console.log(oldName, newName, "names here?")
                         const query = 'UPDATE department SET ? WHERE ?';
                         console.log('Updating Department Name...\n');
                         connection.query(query,
@@ -178,12 +167,11 @@ class Department extends Main {
                             ],
                             (err, res) => {
                                 try {
-                                    console.log(res, "department edit response")
                                     console.log(`${res.affectedRows} department updated!\n`);
                                     this.menu();
                                 } catch (err) {
                                     console.log(err);
-                                }
+                                };
                             }
                         );
                     } catch (err) {
@@ -261,7 +249,6 @@ class Department extends Main {
             console.log(err);
         };
     };
-
 };
 
 module.exports = Department;

@@ -1,12 +1,9 @@
 const inquirer = require('inquirer');
 const connection = require('../config/connection');
-// const mainMenu = require('../main-menu')
-
-class Employee {
+const Main = require('../models/Main');
+class Employee extends Main {
     constructor() {
-        this.roleId = [];
-        this.roleDisplay = [];
-        this.employees = [];
+        super();
     };
 
     menu() {
@@ -28,14 +25,17 @@ class Employee {
                             break;
                         case 'Add Employee':
                             console.log('You have chosen to add an employee');
+                            super.getRoles();
                             this.add();
                             break;
                         case 'Edit Employee':
                             console.log('You have chosen to edit an employee');
+                            super.getEmployees();
                             this.edit();
                             break;
                         case 'Delete Employee':
                             console.log('You have chosen to fire someone');
+                            super.getEmployees();
                             this.delete();
                             break;
                         case 'Exit':
@@ -44,42 +44,6 @@ class Employee {
                             break;
                     };
                 });
-        } catch (err) {
-            console.log(err);
-        };
-    };
-
-    getRoles() {
-        try {
-            const query = 'SELECT * FROM role';
-            connection.query(query, (err, res) => {
-                try {
-                    res.forEach(({ role_id, title }) => {
-                        this.roleId.push(role_id);
-                        this.roleDisplay.push(`-- ${title}: ${role_id} --`);
-                    });
-
-                } catch (err) {
-                    console.log(err);
-                };
-            });
-        } catch (err) {
-            console.log(err);
-        };
-    };
-
-    getEmployees() {
-        try {
-            const query = 'SELECT * FROM employee';
-            connection.query(query, (err, res) => {
-                try {
-                    res.forEach(({ first_name }) => {
-                        this.employees.push(first_name);
-                    });
-                } catch (err) {
-                    console.log(err);
-                };
-            });
         } catch (err) {
             console.log(err);
         };
@@ -106,7 +70,6 @@ class Employee {
 
     add() {
         try {
-            this.getRoles();
             inquirer
                 .prompt([
                     {
@@ -123,7 +86,7 @@ class Employee {
                     },
                     {
                         type: 'list',
-                        message: this.roleDisplay,
+                        message: this.roleName,
                         name: 'roleId',
                         choices: this.roleId
                     }
@@ -157,7 +120,6 @@ class Employee {
                                                 if (!add) {
                                                     this.menu(); // return to main employee menu
                                                 } else if (add) {
-                                                    // addEmployee();
                                                     this.add();
                                                     return;
                                                 };
@@ -180,7 +142,6 @@ class Employee {
 
     edit() {
         try {
-            this.getEmployees();
             inquirer
                 .prompt([
                     {
@@ -210,8 +171,6 @@ class Employee {
                 ])
                 .then(({ oldName, firstName, lastName }) => {
                     try {
-                        console.log(oldName, firstName, lastName, "names here");
-                        //---------------------------------
                         const query = 'UPDATE employee SET ? WHERE ?';
                         console.log('Updating Employee Name...\n');
                         connection.query(query,
@@ -245,7 +204,6 @@ class Employee {
 
     delete() {
         try {
-            this.getEmployees();
             inquirer
                 .prompt([
                     {
