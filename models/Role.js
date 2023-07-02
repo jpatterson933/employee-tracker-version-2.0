@@ -42,7 +42,6 @@ class Role extends Main {
                                 break;
                             case 'Exit':
                                 console.log('Goodbye! Type node server to pull up main menu!');
-                                // connection.end();
                                 mainMenu();
                                 break;
                         }

@@ -33,7 +33,7 @@ const mainMenu = async () => {
                 break;
             case 'Employees':
                 console.log('You have chosen Employees');
-                employee.menu();
+                employee.menu(mainMenu);
                 break;
             case 'Exit':
                 console.log('Goodbye! Type node server to restart the Employee Management System!');

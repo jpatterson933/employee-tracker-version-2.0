@@ -1,12 +1,13 @@
 const inquirer = require('inquirer');
 const connection = require('../config/connection');
 const Main = require('./Main');
+const mainMenu = require('../main-menu');
 class Employee extends Main {
     constructor() {
         super();
     };
 
-    menu() {
+    menu(mainMenu) {
         try {
             inquirer
                 .prompt([
@@ -21,26 +22,26 @@ class Employee extends Main {
                     switch (menuChoice) {
                         case 'View Employees':
                             console.log('You have chosen to view employees');
-                            this.view();
+                            this.view(mainMenu);
                             break;
                         case 'Add Employee':
                             console.log('You have chosen to add an employee');
                             super.getRoles();
-                            this.add();
+                            this.add(mainMenu);
                             break;
                         case 'Edit Employee':
                             console.log('You have chosen to edit an employee');
                             super.getEmployees();
-                            this.edit();
+                            this.edit(mainMenu);
                             break;
                         case 'Delete Employee':
                             console.log('You have chosen to fire someone');
                             super.getEmployees();
-                            this.delete();
+                            this.delete(mainMenu);
                             break;
                         case 'Exit':
                             console.log('Goodbye! Type node server to pull up main menu!');
-                            connection.end();
+                            mainMenu();
                             break;
                     };
                 });
@@ -49,7 +50,7 @@ class Employee extends Main {
         };
     };
 
-    view() {
+    view(mainMenu) {
         try {
             const query = 'SELECT * FROM employee';
             connection.query(query, (err, res) => {
@@ -58,7 +59,7 @@ class Employee extends Main {
                         console.log(`Employee ID : ${employee_id} | Employee Name : ${first_name} ${last_name} | Role ID : ${role_id}`);
                     });
                     console.log('-----------------------------------');
-                    this.menu();
+                    this.menu(mainMenu);
                 } catch (err) {
                     console.log(err);
                 };
@@ -68,7 +69,7 @@ class Employee extends Main {
         };
     };
 
-    add() {
+    add(mainMenu) {
         try {
             inquirer
                 .prompt([
@@ -118,9 +119,9 @@ class Employee extends Main {
                                         .then(({ add }) => {
                                             try {
                                                 if (!add) {
-                                                    this.menu(); // return to main employee menu
+                                                    this.menu(mainMenu); // return to main employee menu
                                                 } else if (add) {
-                                                    this.add();
+                                                    this.add(mainMenu);
                                                     return;
                                                 };
                                             } catch (err) {
@@ -140,7 +141,7 @@ class Employee extends Main {
         };
     };
 
-    edit() {
+    edit(mainMenu) {
         try {
             inquirer
                 .prompt([
@@ -152,7 +153,7 @@ class Employee extends Main {
                 ])
                 .then(({ edit }) => {
                     if (!edit) {
-                        this.menu();
+                        this.menu(mainMenu);
                         return;
                     } else if (edit) {
                         inquirer
@@ -196,7 +197,7 @@ class Employee extends Main {
                                             try {
                                                 console.log(`${res.affectedRows} employees updated!\n`);
                                                 console.log('Type node server and press ENTER for Main Menu');
-                                                this.menu();
+                                                this.menu(mainMenu);
                                             } catch (err) {
                                                 console.log(err);
                                             };
@@ -213,7 +214,7 @@ class Employee extends Main {
         };
     };
 
-    delete() {
+    delete(mainMenu) {
         try {
             inquirer
                 .prompt([
@@ -226,7 +227,7 @@ class Employee extends Main {
                 .then(({ remove }) => {
                     try {
                         if (!remove) {
-                            this.menu();
+                            this.menu(mainMenu);
                             return;
                         } else if (remove) {
                             try {
@@ -250,7 +251,7 @@ class Employee extends Main {
                                                 (err, res) => {
                                                     try {
                                                         console.log(`${res.affectedRows} employee deleted!\n`);
-                                                        this.menu();
+                                                        this.menu(mainMenu);
                                                     } catch (err) {
                                                         console.log(err);
                                                     };
