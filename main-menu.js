@@ -1,8 +1,8 @@
 const inquirer = require('inquirer');
 const connection = require('./config/connection');
-const Employee = require('./employees/menu-emp');
-const Department = require('./departments/menu-dept');
-const Role = require('./roles/menu-roles');
+const Department = require('./models/Department');
+const Role = require('./models/Role');
+const Employee = require('./models/Employee');
 
 const empMenuChoices = ['View Employees', 'Add Employee', 'Edit Employee', 'Delete Employee', 'Exit'];
 

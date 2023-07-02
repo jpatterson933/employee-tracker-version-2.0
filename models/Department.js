@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const connection = require('../config/connection');
-const Main = require('../models/Main');
+const Main = require('./Main');
 class Department extends Main {
     constructor() {
         super();

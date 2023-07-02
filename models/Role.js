@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const connection = require('../config/connection');
-const Main = require('../models/Main');
+const Main = require('./Main');
 class Role extends Main {
     constructor() {
         super();
@@ -272,8 +272,6 @@ class Role extends Main {
                         console.log(err);
                     };
                 });
-
-
         } catch (err) {
             console.log(err);
         };
