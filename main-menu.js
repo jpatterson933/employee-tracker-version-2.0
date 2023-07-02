@@ -29,7 +29,7 @@ const mainMenu = async () => {
                 break;
             case 'Employee Roles':
                 console.log('You choose employee roles');
-                role.menu();
+                role.menu(mainMenu);
                 break;
             case 'Employees':
                 console.log('You have chosen Employees');

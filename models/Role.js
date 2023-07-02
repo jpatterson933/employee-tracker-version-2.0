@@ -1,12 +1,13 @@
 const inquirer = require('inquirer');
 const connection = require('../config/connection');
 const Main = require('./Main');
+const mainMenu = require('../main-menu');
 class Role extends Main {
     constructor() {
         super();
     };
 
-    menu() {
+    menu(mainMenu) {
         try {
             inquirer
                 .prompt([
@@ -22,26 +23,27 @@ class Role extends Main {
                         switch (menuChoice) {
                             case 'View Roles':
                                 console.log('You have chosen to view roles');
-                                this.view();
+                                this.view(mainMenu);
                                 break;
                             case 'Add Role':
                                 console.log('You have chosen to add a role');
                                 super.getDepartments();
-                                this.add();
+                                this.add(mainMenu);
                                 break;
                             case 'Edit Role':
                                 console.log('You have chosen to edit role');
                                 super.getRoles();
-                                this.edit();
+                                this.edit(mainMenu);
                                 break;
                             case 'Delete Role':
                                 console.log('You have chosen to delete a role');
                                 super.getRoles();
-                                this.delete();
+                                this.delete(mainMenu);
                                 break;
                             case 'Exit':
                                 console.log('Goodbye! Type node server to pull up main menu!');
-                                connection.end();
+                                // connection.end();
+                                mainMenu();
                                 break;
                         }
                     } catch (err) {
@@ -53,7 +55,7 @@ class Role extends Main {
         };
     };
 
-    view() {
+    view(mainMenu) {
         try {
             connection.query('SELECT * FROM role', (err, res) => {
                 try {
@@ -61,7 +63,7 @@ class Role extends Main {
                         console.log(`Role ID : ${role_id} | Title : ${title} | Salary : ${salary} | Department ID : ${department_id}`);
                     });
                     console.log('-----------------------------------');
-                    this.menu();
+                    this.menu(mainMenu);
                 } catch (err) {
                     console.log(err);
                 };
@@ -72,7 +74,7 @@ class Role extends Main {
         };
     };
 
-    add() {
+    add(mainMenu) {
         try {
             try {
                 inquirer
@@ -120,9 +122,9 @@ class Role extends Main {
                                             ])
                                             .then(({ add }) => {
                                                 if (!add) {
-                                                    this.menu();
+                                                    this.menu(mainMenu);
                                                 } else if (add) {
-                                                    this.add();
+                                                    this.add(mainMenu);
                                                 };
                                             });
                                     } catch (err) {
@@ -141,7 +143,7 @@ class Role extends Main {
         };
     };
 
-    edit() {
+    edit(mainMenu) {
         try {
             inquirer
                 .prompt([
@@ -154,16 +156,16 @@ class Role extends Main {
                 .then(({ edit }) => {
 
                     if (!edit) {
-                        this.menu();
+                        this.menu(mainMenu);
                         return;
                     } else if (edit) {
                         inquirer
                             .prompt([
                                 {
                                     type: 'list',
-                                    message: 'Please enter a Role you would like to edit',
+                                    message: this.roleName,
                                     name: 'oldTitle',
-                                    choices: this.roles,
+                                    choices: this.roleId,
                                     validate: checkInput => checkInput ? true : (console.log('Please enter a role name!'), false)
                                 },
                                 {
@@ -191,13 +193,13 @@ class Role extends Main {
                                                 salary: `${newSal}`
                                             },
                                             {
-                                                title: `${oldTitle}`
+                                                role_id: `${oldTitle}`
                                             }
                                         ],
                                         (err, res) => {
                                             try {
                                                 console.log(`${res.affectedRows} roles updated!\n`);
-                                                this.menu();
+                                                this.menu(mainMenu);
                                             } catch (err) {
                                                 console.log(err);
                                             };
@@ -215,7 +217,7 @@ class Role extends Main {
         };
     };
 
-    delete() {
+    delete(mainMenu) {
         try {
             inquirer
                 .prompt([
@@ -228,7 +230,7 @@ class Role extends Main {
                 .then(({ remove }) => {
                     try {
                         if (!remove) {
-                            this.menu();
+                            this.menu(mainMenu);
                             return;
                         } else if (remove) {
                             try {
@@ -250,11 +252,10 @@ class Role extends Main {
                                                     role_id: `${role}`,
                                                 },
                                                 (err, res) => {
-                                                    console.log(res)
                                                     if (err) console.log(err);
                                                     try {
                                                         console.log(`${res.affectedRows} roles deleted!\n`);
-                                                        this.menu();
+                                                        this.menu(mainMenu);
                                                     } catch (err) {
                                                         console.log(err);
                                                     };
