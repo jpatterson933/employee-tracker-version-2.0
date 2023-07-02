@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const connection = require('./config/connection');
+const Menu = require('./models/Menu');
 const Department = require('./models/Department');
 const Role = require('./models/Role');
 const Employee = require('./models/Employee');
@@ -7,21 +8,24 @@ const Employee = require('./models/Employee');
 const empMenuChoices = ['View Employees', 'Add Employee', 'Edit Employee', 'Delete Employee', 'Exit'];
 
 // const empMenuFunctions = [viewEmployees(), addEmployee(), editEmployee(), deleteEmployee()]
-const employee = new Employee();
+const menu = new Menu();
 const department = new Department();
 const role = new Role();
+const employee = new Employee();
 const mainMenu = async () => {
     try {
-        const { menu } = await inquirer.prompt([
-            {
-                type: 'list',
-                message: 'Main Menu',
-                name: 'menu',
-                choices: ['Departments', 'Employee Roles', 'Employees', 'Exit']
-            }
-        ]);
+        // const { menu } = await inquirer.prompt([
+        //     {
+        //         type: 'list',
+        //         message: 'Main Menu',
+        //         name: 'menu',
+        //         choices: ['Departments', 'Employee Roles', 'Employees', 'Exit']
+        //     }
+        // ]);
 
-        switch (menu) {
+        const choice = await menu.menu();
+        console.log(choice, "choice");
+        switch (choice) {
             case 'Departments':
                 console.log('You choose departments');
                 department.menu();
