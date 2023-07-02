@@ -91,7 +91,9 @@ The usage is for an employee to create and track employees, departments and role
 
 If you would like to contribute and increase the effectiveness of this application, look at the errors written below and future goals, and you can contribute following those guidelines. Please do not copy this code for your homework assignment as it is very easy to catch cheaters now a days. Refactor and make it your own. That is how you learn. 
 
-Some future things would be like tracking labor costs yearly. This would not involve any type of clock in or time management system, but would simply break down the salaries of current employees. 
+Some future things would be like tracking labor costs yearly. This would not involve any type of clock in or time management system, but would simply break down the salaries of current employees.
+
+Check issues for further app upgrades.
 
 [Back to Top](#table-of-contents)
 
@@ -115,6 +117,6 @@ If you have any questions that have not been answered, please send me an email: 
 ### [GitHub Repository](https://github.com/jpatterson933/employee-tracker-version-2.0)
 ## Known Issues
 
-There are several known issues and other basic functions. The user has to type node server to return to the main menu. See issues tab for further details and most up to date issues.
+Fully functioning terminal application. Check the issues for a current list of application upgrades outside of a terminal app mvp.
 
 [Back to Top](#table-of-contents)
