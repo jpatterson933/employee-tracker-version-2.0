@@ -8,27 +8,24 @@ const Employee = require('./models/Employee');
 const empMenuChoices = ['View Employees', 'Add Employee', 'Edit Employee', 'Delete Employee', 'Exit'];
 
 // const empMenuFunctions = [viewEmployees(), addEmployee(), editEmployee(), deleteEmployee()]
-const menu = new Menu();
 const department = new Department();
 const role = new Role();
 const employee = new Employee();
 const mainMenu = async () => {
     try {
-        // const { menu } = await inquirer.prompt([
-        //     {
-        //         type: 'list',
-        //         message: 'Main Menu',
-        //         name: 'menu',
-        //         choices: ['Departments', 'Employee Roles', 'Employees', 'Exit']
-        //     }
-        // ]);
+        const { menu } = await inquirer.prompt([
+            {
+                type: 'list',
+                message: 'Main Menu',
+                name: 'menu',
+                choices: ['Departments', 'Employee Roles', 'Employees', 'Exit']
+            }
+        ]);
 
-        const choice = await menu.menu();
-        console.log(choice, "choice");
-        switch (choice) {
+        switch (menu) {
             case 'Departments':
                 console.log('You choose departments');
-                department.menu();
+                department.menu(mainMenu);
                 break;
             case 'Employee Roles':
                 console.log('You choose employee roles');
@@ -49,3 +46,13 @@ const mainMenu = async () => {
 };
 
 module.exports = mainMenu;
+
+
+// const mainMenu = async () => {
+//     try {
+//         const choice = await menu.menu();
+//         menu.nav(choice);
+//     } catch (err) {
+//         console.log(err);
+//     };
+// };
