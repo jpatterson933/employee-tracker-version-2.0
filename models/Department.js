@@ -32,6 +32,7 @@ class Department extends Main {
                                 break;
                             case 'Edit Departments':
                                 console.log('You chose to edit the departments')
+                                super.getDepartments();
                                 this.edit(mainMenu);
                                 break;
                             case 'Delete Departments':
@@ -132,7 +133,6 @@ class Department extends Main {
 
     edit(mainMenu) {
         try {
-            super.getDepartments(); // refresh departments tab
             inquirer
                 .prompt([
                     {
