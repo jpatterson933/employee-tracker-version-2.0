@@ -99,7 +99,9 @@ Check issues for further app upgrades.
 
 # Testing Instrutions
 
-There are no tests yet built for this application. They will be built once main classes are finalized. (clearly not test driven development -__- )
+`npm run test`
+
+This will run the current level of tests that are built out to add more strength to the application. Test are built out and run using `jest`
 
 [Back to Top](#table-of-contents)
 
