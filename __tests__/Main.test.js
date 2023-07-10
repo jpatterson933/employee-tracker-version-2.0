@@ -1,28 +1,17 @@
 // require('iconv-lite').encodingExists('foo')
+const connection = require('../config/connection')
 const mysql = require('mysql2');
 require('dotenv').config()
 
-const connection = require('../config/connection');
 
 const Main = require('../models/Main');
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-// beforeEach(() => {
-//     mysql.createConnection({
-//         host: 'localhost',
-//         // Your port, if not 3306
-//         port: 3306,
-//         // we grab our stored variables from .env file
-//         user: process.env.DB_USER,
-//         password: process.env.DB_PASSWORD,
-//         database: process.env.DB_NAME,
-//       });
-//       console.log("setting up database connection")
-// })
+
 
 afterEach(() => {
-    console.log("closing database connection")
+    console.log("closing database connection");
     connection.end();
 })
 describe("Testing Main model build", () => {
@@ -40,9 +29,20 @@ describe("Testing Main model build", () => {
 
 })
 
+connection.query = jest.fn().mockImplementation((query, callback) => {
+    callback(null, [
+        {roleId: 1, title: 'Role 1'},
+        {roleId: 2, title: 'Role 2'}
+    ])
+})
+
 describe("testing getRoles() method", () => {
-    test("expect the roleId and roleName arrays to fille up", async () => {
+    test("expect the roleId and roleName to be arrays", async () => {
         const model = await new Main();
+        await model.getRoles();
+
+        expect(Array.isArray(model.roleId)).toBe(true);
+        expect(Array.isArray(model.roleName)).toBe(true);
         
     })
 })
