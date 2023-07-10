@@ -21,8 +21,8 @@ describe("Testing Main model build", () => {
     afterEach(async () => {
         await sleep(2000);
     })
-    test("Can instantiate Main model instance", async () => {
-        const model = await new Main();
+    test("Can instantiate Main model instance", () => {
+        const model = new Main();
         expect(typeof (model)).toBe("object");
     });
 
@@ -31,7 +31,7 @@ describe("Testing Main model build", () => {
 })
 
 describe("testing getRoles() method", () => {
-    test("expect the roleId and roleName to be arrays", async () => {
+    test("expect the roleId and roleName to be arrays", () => {
         // use to create mock queries to further test data
         connection.query = jest
             .fn()
@@ -41,15 +41,15 @@ describe("testing getRoles() method", () => {
                     { roleId: 2, title: 'Role 2' }
                 ])
             })
-        const model = await new Main();
-        await model.getRoles();
+        const model = new Main();
+        model.getRoles();
         expect(Array.isArray(model.roleId)).toBe(true);
         expect(Array.isArray(model.roleName)).toBe(true);
     })
 })
 
 describe("Testing getEmployees() method", () => {
-    test("expect the first_name to be an array", async () => {
+    test("expect the first_name to be an array", () => {
         // create mock query
         connection.query = jest
             .fn()
@@ -60,14 +60,14 @@ describe("Testing getEmployees() method", () => {
                 ])
             })
 
-        const model = await new Main();
-        await model.getEmployees();
+        const model = new Main();
+        model.getEmployees();
         expect(Array.isArray(model.employees)).toBe(true);
     })
 })
 
 describe("Testing getDepartments() method", () => {
-    test("expect the department and departmentId to be an array", async () => {
+    test("expect the department and departmentId to be an array", () => {
         // create mock query
         connection.query = jest
             .fn()
@@ -78,8 +78,8 @@ describe("Testing getDepartments() method", () => {
                 ])
             })
 
-        const model = await new Main();
-        await model.getDepartments();
+        const model = new Main();
+        model.getDepartments();
         expect(Array.isArray(model.departmentId)).toBe(true);
         expect(Array.isArray(model.departments)).toBe(true);
     })
