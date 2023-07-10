@@ -31,26 +31,33 @@ class Main {
                 });
             } catch (err) {
                 console.log(err);
+                reject(err);
             };
         });
     };
 
     getEmployees() {
-        try {
-            const query = 'SELECT * FROM employee';
-            connection.query(query, (err, res) => {
-                try {
-                    this.employees.splice(0, this.employees.length);
-                    res.forEach(({ first_name }) => {
-                        this.employees.push(first_name);
-                    });
-                } catch (err) {
-                    console.log(err);
-                };
-            });
-        } catch (err) {
-            console.log(err);
-        };
+        return new Promise((resolve, reject) => {
+
+            try {
+                const query = 'SELECT * FROM employee';
+                connection.query(query, (err, res) => {
+                    try {
+                        this.employees.splice(0, this.employees.length);
+                        res.forEach(({ first_name }) => {
+                            this.employees.push(first_name);
+                        });
+                        resolve();
+                    } catch (err) {
+                        console.log(err);
+                        reject(err);
+                    };
+                });
+            } catch (err) {
+                console.log(err);
+                reject(err);
+            };
+        })
     };
     
     getDepartments() {
