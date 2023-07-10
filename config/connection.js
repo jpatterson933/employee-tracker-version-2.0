@@ -17,7 +17,7 @@ connection.connect((err) => {
   //show us how we are connected --not implemented
   // console.log(`connected as id ${connection.threadId}`);
 // we do not want our connection to end -- yet
-  connection.end();
+  // connection.end();
 });
 
 module.exports = connection;

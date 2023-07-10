@@ -57,6 +57,7 @@ class Role extends Main {
     view(mainMenu) {
         try {
             connection.query('SELECT * FROM role', (err, res) => {
+                console.log(res, "res")
                 try {
                     res.forEach(({ role_id, title, salary, department_id }) => {
                         console.log(`Role ID : ${role_id} | Title : ${title} | Salary : ${salary} | Department ID : ${department_id}`);

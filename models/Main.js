@@ -11,25 +11,28 @@ class Main {
     }
 
     getRoles() {
-        try {
-            const query = 'SELECT * FROM role';
-            connection.query(query, (err, res) => {
-                try {
-                    this.roleId.splice(0, this.roleId.length);
-                    this.roleName.splice(0, this.roleName.length);
-
-                    res.forEach(({ role_id, title }) => {
-                        this.roleId.push(role_id);
-                        this.roleName.push(`${title}: ${role_id} --`);
-                    });
-
-                } catch (err) {
-                    console.log(err);
-                };
-            });
-        } catch (err) {
-            console.log(err);
-        };
+        return new Promise((resolve, reject) => {
+            try {
+                const query = 'SELECT * FROM role';
+                connection.query(query, (err, res) => {
+                    try {
+                        this.roleId.splice(0, this.roleId.length);
+                        this.roleName.splice(0, this.roleName.length);
+                        
+                        res.forEach(({ role_id, title }) => {
+                            this.roleId.push(role_id);
+                            this.roleName.push(`${title}: ${role_id} --`);
+                        });
+                        resolve();
+                    } catch (err) {
+                        console.log(err);
+                        reject(err);
+                    };
+                });
+            } catch (err) {
+                console.log(err);
+            };
+        });
     };
 
     getEmployees() {
