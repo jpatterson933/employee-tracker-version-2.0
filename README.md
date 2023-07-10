@@ -97,7 +97,7 @@ Check issues for further app upgrades.
 
 [Back to Top](#table-of-contents)
 
-# Testing Instrutions
+# Testing Instructions
 
 `npm run test`
 
