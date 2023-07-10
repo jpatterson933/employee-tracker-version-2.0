@@ -1,13 +1,14 @@
 const inquirer = require('inquirer');
 const connection = require('../config/connection');
 const Main = require('./Main');
-const mainMenu = require('../main-menu');
+// const mainMenu = require('../main-menu');
 class Department extends Main {
-    constructor() {
+    constructor(mainMenu) {
         super();
+        this.mainMenu = mainMenu;
     }
 
-    menu(mainMenu) {
+    menu() {
         try {
             inquirer
                 .prompt([
@@ -24,25 +25,24 @@ class Department extends Main {
                         switch (menuChoice) {
                             case 'View Departments':
                                 console.log('You chose view departments')
-                                this.view(mainMenu);
+                                this.view(this.mainMenu);
                                 break;
                             case 'Add Departments':
                                 console.log('You chose to add a department')
-                                this.add(mainMenu);
+                                this.add(this.mainMenu);
                                 break;
                             case 'Edit Departments':
                                 console.log('You chose to edit the departments')
                                 super.getDepartments();
-                                this.edit(mainMenu);
+                                this.edit(this.mainMenu);
                                 break;
                             case 'Delete Departments':
                                 console.log('You are eleminating an entire Department')
-                                super.getDepartments();
-                                this.delete(mainMenu);
+                                this.delete(this.mainMenu);
                                 break;
                             case 'Exit':
                                 console.log('Goodbye! Type node server to pull up main menu!')
-                                mainMenu();
+                                this.mainMenu();
                                 break;
                         };
                     } catch (err) {
@@ -54,7 +54,7 @@ class Department extends Main {
         };
     };
 
-    view(mainMenu) {
+    view() {
         try {
             const query = 'SELECT * FROM department';
             connection.query(query, (err, res) => {
@@ -63,7 +63,7 @@ class Department extends Main {
                         console.table(`${department_id} | ${department_name}`);
                     });
                     console.log('-----------------------------------');
-                    this.menu(mainMenu);
+                    this.menu(this.mainMenu);
                 } catch (err) {
                     console.log(err);
                 };
@@ -73,7 +73,7 @@ class Department extends Main {
         };
     };
 
-    add(mainMenu) {
+    add() {
         try {
             inquirer
                 .prompt([
@@ -109,9 +109,9 @@ class Department extends Main {
                                         .then(({ add }) => {
                                             try {
                                                 if (!add) {
-                                                    this.menu(mainMenu);
+                                                    this.menu(this.mainMenu);
                                                 } else if (add) {
-                                                    this.add(mainMenu);
+                                                    this.add(this.mainMenu);
                                                     return;
                                                 };
                                             } catch (err) {
@@ -131,7 +131,7 @@ class Department extends Main {
         };
     };
 
-    edit(mainMenu) {
+    edit() {
         try {
             inquirer
                 .prompt([
@@ -143,7 +143,7 @@ class Department extends Main {
                 ])
                 .then(({ edit }) => {
                     if (!edit) {
-                        this.menu(mainMenu);
+                        this.menu(this.mainMenu);
                         return;
                     } else if (edit) {
                         try {
@@ -180,7 +180,7 @@ class Department extends Main {
                                             (err, res) => {
                                                 try {
                                                     console.log(`${res.affectedRows} department updated!\n`);
-                                                    this.menu(mainMenu);
+                                                    this.menu(this.mainMenu);
                                                 } catch (err) {
                                                     console.log(err);
                                                 };
@@ -201,7 +201,9 @@ class Department extends Main {
         };
     };
 
-    delete(mainMenu) {
+    delete() {
+        // needs to be kept in here so it refreshes list when this.delete() is called if user decides to delete another department
+        super.getDepartments();
         try {
             inquirer
                 .prompt([
@@ -214,7 +216,7 @@ class Department extends Main {
                 .then(({ remove }) => {
                     try {
                         if (!remove) {
-                            this.menu(mainMenu);
+                            this.menu(this.mainMenu);
                             return;
                         } else if (remove) {
                             inquirer
@@ -243,13 +245,13 @@ class Department extends Main {
                                                         .prompt([
                                                             {
                                                                 type: 'confirm',
-                                                                message: 'Would you like to add another department?',
+                                                                message: 'Would you like to delete another department?',
                                                                 name: 'del'
                                                             }
                                                         ])
                                                         .then(({ del }) => {
                                                             try {
-                                                                return (!del) ? (this.menu(mainMenu)) : (this.delete(mainMenu));
+                                                                return (!del) ? (this.menu(this.mainMenu)) : (this.delete(this.mainMenu));
                                                             } catch (err) {
                                                                 console.error(err);
                                                             };

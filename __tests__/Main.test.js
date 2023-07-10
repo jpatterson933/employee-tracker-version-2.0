@@ -1,7 +1,6 @@
-const connection = require('../config/connection')
+const connection = require('../config/connection');
 const Main = require('../models/Main');
-
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const sleep = require('../utils/sleep');
 
 // close our database connection after all tests have run
 afterAll(() => {

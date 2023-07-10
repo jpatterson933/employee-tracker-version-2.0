@@ -8,10 +8,10 @@ const Employee = require('./models/Employee');
 const empMenuChoices = ['View Employees', 'Add Employee', 'Edit Employee', 'Delete Employee', 'Exit'];
 
 // const empMenuFunctions = [viewEmployees(), addEmployee(), editEmployee(), deleteEmployee()]
-const department = new Department();
+const department = new Department(mainMenu);
 const role = new Role();
 const employee = new Employee();
-const mainMenu = async () => {
+async function mainMenu () {
     try {
         const { menu } = await inquirer.prompt([
             {
