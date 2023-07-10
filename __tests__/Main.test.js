@@ -65,3 +65,22 @@ describe("Testing getEmployees() method", () => {
         expect(Array.isArray(model.employees)).toBe(true);
     })
 })
+
+describe("Testing getDepartments() method", () => {
+    test("expect the department and departmentId to be an array", async () => {
+        // create mock query
+        connection.query = jest
+            .fn()
+            .mockImplementation((query, callback) => {
+                callback(null, [
+                    { department_name: "Department One", department_id: 1 },
+                    { department_name: "Department Two", department_id: 2 },
+                ])
+            })
+
+        const model = await new Main();
+        await model.getDepartments();
+        expect(Array.isArray(model.departmentId)).toBe(true);
+        expect(Array.isArray(model.departments)).toBe(true);
+    })
+})
