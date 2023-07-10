@@ -1,15 +1,9 @@
-// require('iconv-lite').encodingExists('foo')
 const connection = require('../config/connection')
-const mysql = require('mysql2');
-require('dotenv').config()
-
-
 const Main = require('../models/Main');
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-
-
+// close our database connection after all tests have run
 afterAll(() => {
     console.log("closing database connection");
     connection.end();
@@ -21,13 +15,10 @@ describe("Testing Main model build", () => {
     afterEach(async () => {
         await sleep(2000);
     })
-    test("Can instantiate Main model instance", () => {
+    test("expect instance of Main class", () => {
         const model = new Main();
         expect(typeof (model)).toBe("object");
     });
-
-
-
 })
 
 describe("testing getRoles() method", () => {
